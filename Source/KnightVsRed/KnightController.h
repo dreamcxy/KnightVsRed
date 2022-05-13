@@ -9,6 +9,7 @@
 #include "PaperFlipbookActor.h"
 #include "PaperFlipbookComponent.h"
 #include "GameFramework/Actor.h"
+#include "common.h"
 #include "KnightController.generated.h"
 
 

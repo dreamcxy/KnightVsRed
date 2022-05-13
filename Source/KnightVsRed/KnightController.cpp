@@ -56,7 +56,7 @@ void UKnightController::BeginPlay()
 	{
 		UE_LOG(LogTemp, Error, TEXT("set flip book fail"));
 	}
-	UE_LOG(LogTemp, Log, TEXT("after set flipbook name : %s"), *(flipbookComponent->GetFlipbook()->GetName()));
+	print_temp("after set filpbook name : %s",  *(flipbookComponent->GetFlipbook()->GetName()));
 }
 
 
