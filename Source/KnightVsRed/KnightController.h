@@ -37,9 +37,9 @@ public:
 	}
 	
 public:
-	UPaperFlipbook* idleAnim;
-	UPaperFlipbook* runningAnim;
+	UPaperFlipbook*	idleAnim					= nullptr;
+	UPaperFlipbook* runningAnim					= nullptr;
 
-	APaperFlipbookActor* actor;
-	UPaperFlipbookComponent* flipbookComponent;
+	APaperFlipbookActor* actor					= nullptr;
+	UPaperFlipbookComponent* flipbookComponent	= nullptr;
 };
