@@ -10,4 +10,9 @@ Developed with Unreal Engine 4
     - GetOwner()->GetName() 无法在构造函数里面打印，会引起ue奔溃（https://forums.unrealengine.com/t/calling-method-getowner-getname-crash-editor/352829）
 * 导入并支持切换knight的idle,running序列帧
 
+### 5.15开发记录
+* knightcontroller->knightcomponentcontroller用于组件管理 ，add knightcontroller 用于actor管理， 不然没有
+办法监听输入事件（ue里面改个代码文件名称或者删除步骤真tm复杂，离谱）
+* 从pawn生成KnightPawn管理knight
+  - ue可以从c++直接生成一个actor，直接把代码拖入到场景里面即可，然后可以将它保存成一个蓝图，方便以后复用
 
