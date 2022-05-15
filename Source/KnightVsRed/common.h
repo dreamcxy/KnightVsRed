@@ -29,3 +29,11 @@ UE_LOG(LogTemp, Warning, TEXT(_s_), ##__VA_ARGS__); \
 	
 #define MOVE_SPEED 5.0f
 #define MOVE_SPEED_MULTI 100.0f
+
+
+enum PlayerPawnState
+{
+	IDLE,
+	RUN,
+	ATTACK
+};

@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "common.h"
 #include "GameFramework/Pawn.h"
 #include "Components/InputComponent.h"
 #include "PaperFlipbook.h"
@@ -36,14 +37,21 @@ public:
 	void MoveForward();
 	void MoveBack();
 	void StopMove();
+	void Attack();
+	void StopAttack();
 	
 private:
 	bool ChangeFlipBook(UPaperFlipbook* newPaperFlipbook) const;
-	
+	void SetPlayerPawnState(PlayerPawnState toState);
+	PlayerPawnState GetPlayerPawnState() const { return PlayerPawnState; }
 public:
 	FVector CurrentVelocity;
 
 	UPaperFlipbookComponent* PaperFlipbookComponent;
 	UPaperFlipbook* idleAnim;
 	UPaperFlipbook* runningAnim;
+	UPaperFlipbook* attackAnim;
+
+	PlayerPawnState PlayerPawnState;
+
 };
