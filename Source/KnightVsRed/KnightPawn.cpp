@@ -2,8 +2,10 @@
 
 
 #include "KnightPawn.h"
-
 #include "common.h"
+
+
+
 
 // Sets default values
 AKnightPawn::AKnightPawn()
@@ -51,11 +53,10 @@ void AKnightPawn::Tick(float DeltaTime)
 
 	if (!CurrentVelocity.IsZero())
 	{
-		FVector newLocation = GetActorLocation() + (CurrentVelocity * DeltaTime);
-		print_temp("new location x:%f, y:%f, z:%f", newLocation.X, newLocation.Y, newLocation.Z);
+		const FVector newLocation = GetActorLocation() + (CurrentVelocity * DeltaTime);
+		print_temp("new location :%s", *(newLocation.ToString()));
 		SetActorLocation(newLocation);
 	}
-
 }
 
 // Called to bind functionality to input
@@ -63,24 +64,66 @@ void AKnightPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-	PlayerInputComponent->BindAxis("xAxis", this, &AKnightPawn::MoveXAxis);
-	
+	// PlayerInputComponent->BindAxis("xAxis", this, &AKnightPawn::MoveXAxis);
+	PlayerInputComponent->BindAction("MoveForward", IE_Pressed, this, &AKnightPawn::MoveForward);
+	PlayerInputComponent->BindAction("MoveBack", IE_Pressed, this, &AKnightPawn::MoveBack);
+
+	PlayerInputComponent->BindAction("MoveForward", IE_Released, this, &AKnightPawn::StopMove);
+	PlayerInputComponent->BindAction("MoveBack", IE_Released, this, &AKnightPawn::StopMove);
 }
 
-void AKnightPawn::MoveXAxis(float value)
+void AKnightPawn::MoveForward()
 {
-	if (value == 0)
+	CurrentVelocity.X = FMath::Clamp(MOVE_SPEED, -1.0f, 1.0f) * MOVE_SPEED_MULTI;
+	TRUE_ERR(ChangeFlipBook(runningAnim), u"ChangeFlipBook");
+	print_temp("rotation:%s", *GetControlRotation().ToString());
+	if (!PaperFlipbookComponent->GetComponentRotation().IsZero())
 	{
-		return;
-	}
-	
-	CurrentVelocity.X = FMath::Clamp(value, -1.0f, 1.0f) * 100.0f;
-	print_temp("velocity x:%f, y:%f, z:%f", CurrentVelocity.X, CurrentVelocity.Y, CurrentVelocity.Z);
-	if (!PaperFlipbookComponent->SetFlipbook(runningAnim))
-	{
-		print_err("knight change flip error");
+		// 说明方向反了，需要转向
+		const FRotator yawRotation(0, 0, 0);
+		PaperFlipbookComponent->SetRelativeRotation(yawRotation);
 	}
 }
+
+void AKnightPawn::MoveBack()
+{
+	CurrentVelocity.X = FMath::Clamp(-MOVE_SPEED, -1.0f, 1.0f) * MOVE_SPEED_MULTI;
+	TRUE_ERR(ChangeFlipBook(runningAnim), u"ChangeFlipBook");
+	print_temp("rotation:%s", *GetControlRotation().ToString());
+	if (PaperFlipbookComponent->GetComponentRotation().IsZero())
+	{
+		const FRotator yawRotation(0, 180, 0);
+		PaperFlipbookComponent->SetRelativeRotation(yawRotation);
+	}
+}
+
+void AKnightPawn::StopMove()
+{
+	CurrentVelocity = FVector::ZeroVector;
+	TRUE_ERR(ChangeFlipBook(idleAnim), u"ChangeFlipBook");
+}
+
+bool AKnightPawn::ChangeFlipBook(UPaperFlipbook* newPaperFlipbook) const
+{
+	return PaperFlipbookComponent->SetFlipbook(newPaperFlipbook);
+}
+
+
+// void AKnightPawn::MoveXAxis(float value)
+// 这个是持续前进
+// {
+// 	if (value == 0)
+// 	{
+// 		return;
+// 	}
+// 	
+// 	CurrentVelocity.X = FMath::Clamp(value, -1.0f, 1.0f) * 100.0f;
+// 	print_temp("velocity x:%f, y:%f, z:%f", CurrentVelocity.X, CurrentVelocity.Y, CurrentVelocity.Z);
+// 	if (!PaperFlipbookComponent->SetFlipbook(runningAnim))
+// 	{
+// 		print_err("knight change flip error");
+// 	}
+// }
 
 
 

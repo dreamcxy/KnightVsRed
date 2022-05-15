@@ -19,4 +19,13 @@ UE_LOG(LogTemp, Warning, TEXT(_s_), ##__VA_ARGS__); \
 		print_err("err to load ptr:%s", *(ptr->GetName()));\
 	}\
 }while(0)
+
+#define TRUE_ERR(b, reason) do {\
+	if (b != true)\
+	{\
+		print_err("not zero, fail:%s", reason);\
+	}\
+}while(0)
 	
+#define MOVE_SPEED 5.0f
+#define MOVE_SPEED_MULTI 100.0f

@@ -32,8 +32,14 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 public:
-	void MoveXAxis(float value);
-
+	// void MoveXAxis(float value);
+	void MoveForward();
+	void MoveBack();
+	void StopMove();
+	
+private:
+	bool ChangeFlipBook(UPaperFlipbook* newPaperFlipbook) const;
+	
 public:
 	FVector CurrentVelocity;
 
