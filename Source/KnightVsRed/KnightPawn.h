@@ -5,6 +5,8 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
 #include "Components/InputComponent.h"
+#include "PaperFlipbook.h"
+#include "PaperFlipbookComponent.h"
 #include "KnightPawn.generated.h"
 
 UCLASS()
@@ -12,6 +14,8 @@ class KNIGHTVSRED_API AKnightPawn : public APawn
 {
 	GENERATED_BODY()
 
+	
+	
 public:
 	// Sets default values for this pawn's properties
 	AKnightPawn();
@@ -29,5 +33,11 @@ public:
 
 public:
 	void MoveXAxis(float value);
-	
+
+public:
+	FVector CurrentVelocity;
+
+	UPaperFlipbookComponent* PaperFlipbookComponent;
+	UPaperFlipbook* idleAnim;
+	UPaperFlipbook* runningAnim;
 };
