@@ -17,9 +17,9 @@ AKnightPawn::AKnightPawn()
 		ConstructorHelpers::FObjectFinderOptional<UPaperFlipbook> attackAnim;
 		
 		AnimConstructor():
-		idleAnim(TEXT("PaperFlipbook'/Game/animation/_Idle_idle._Idle_idle'")),
-		runningAnim(TEXT("PaperFlipbook'/Game/animation/_Run_run._Run_run'")),
-		attackAnim(TEXT("PaperFlipbook'/Game/animation/_Attack_attack._Attack_attack'"))
+		idleAnim(TEXT("PaperFlipbook'/Game/animation/knight/_Idle_idle._Idle_idle'")),
+		runningAnim(TEXT("PaperFlipbook'/Game/animation/knight/_Run_run._Run_run'")),
+		attackAnim(TEXT("PaperFlipbook'/Game/animation/knight/_Attack_attack._Attack_attack'"))
 		{
 			
 		}

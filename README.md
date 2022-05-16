@@ -29,4 +29,5 @@ Developed with Unreal Engine 4
 * 真麻烦， git pull下来的要让ue重编
 * 很奇怪， 鼠标的release事件跟键盘的release事件的触发应该不是同一个机制，鼠标release事件会导致attack动画没法正常还原到idle，
 会不间断触发attack， 不知道是ue4的play模式下窗口点击的问题，还是确实是机制问题, 先改成按键触发了
+* 加入red的idle
 
