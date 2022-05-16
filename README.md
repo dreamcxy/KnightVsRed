@@ -2,6 +2,9 @@
 
 Developed with Unreal Engine 4
 
+### 问题
+-[ ] ue4 鼠标的release触发和键盘的release触发（见5.16）
+
 
 ### 5.13开发记录
 * ue上传github
@@ -21,3 +24,9 @@ Developed with Unreal Engine 4
 不然PaperFlipbook会作为root节点，这样加入的camera会变成它的子组件，在左右旋转flipbook的时候会跟着一起转，等于没效果
 * 鼠标的release操作， 很有问题，鼠标只要不动，就一直是release状态， 无语。
 * 垃圾ue4， 真的是小问题不断，我持续开了几小时，它的ui界面就不行了，菜单就没法正常稳定显示，一直会闪烁。
+
+### 5.16开发记录
+* 真麻烦， git pull下来的要让ue重编
+* 很奇怪， 鼠标的release事件跟键盘的release事件的触发应该不是同一个机制，鼠标release事件会导致attack动画没法正常还原到idle，
+会不间断触发attack， 不知道是ue4的play模式下窗口点击的问题，还是确实是机制问题, 先改成按键触发了
+

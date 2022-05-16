@@ -23,7 +23,7 @@ UE_LOG(LogTemp, Warning, TEXT(_s_), ##__VA_ARGS__); \
 #define TRUE_ERR(b, reason) do {\
 	if (b != true)\
 	{\
-		print_err("not zero, fail:%s", reason);\
+		print_err("not true, fail:%s", reason);\
 	}\
 }while(0)
 	

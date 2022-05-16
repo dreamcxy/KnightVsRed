@@ -43,8 +43,7 @@ void AKnightPawn::BeginPlay()
 
 	PaperFlipbookComponent = Cast<UPaperFlipbookComponent>(GetComponentByClass(UPaperFlipbookComponent::StaticClass()));
 	NULL_ERR(PaperFlipbookComponent);
-
-	
+	SetPlayerPawnState(IDLE);
 }
 
 // Called every frame
@@ -58,6 +57,7 @@ void AKnightPawn::Tick(float DeltaTime)
 		// print_temp("new location :%s", *(newLocation.ToString()));
 		SetActorLocation(newLocation);
 	}
+	// print_temp("knight state: %d", GetPlayerPawnState());
 }
 
 // Called to bind functionality to input
@@ -75,22 +75,29 @@ void AKnightPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	
 	// 攻击
 	PlayerInputComponent->BindAction("Attack", IE_Pressed, this, &AKnightPawn::Attack);
-	// PlayerInputComponent->BindAction("Attack", IE_Released, this, &AKnightPawn::StopAttack);
+	PlayerInputComponent->BindAction("Attack", IE_Released, this, &AKnightPawn::StopAttack);
 	
 }
 
 void AKnightPawn::Attack()
 {
+	print_temp("knight state: %d", GetPlayerPawnState());
 	if (GetPlayerPawnState() == RUN)
 	{
 		return;
 	}
-	TRUE_ERR(ChangeFlipBook(attackAnim), u"Attack");
+	TRUE_ERR(ChangeFlipBook(attackAnim), u"AttackOn");
+	SetPlayerPawnState(ATTACK);
 }
 
 void AKnightPawn::StopAttack()
 {
-	TRUE_ERR(ChangeFlipBook(idleAnim), u"Attack");
+	if (GetPlayerPawnState() != ATTACK)
+	{
+		return;
+	}
+	TRUE_ERR(ChangeFlipBook(idleAnim), u"AttackOver");
+	SetPlayerPawnState(IDLE);
 }
 
 
@@ -105,6 +112,7 @@ void AKnightPawn::MoveForward()
 		const FRotator yawRotation(0, 0, 0);
 		PaperFlipbookComponent->SetRelativeRotation(yawRotation);
 	}
+	SetPlayerPawnState(RUN);
 }
 
 void AKnightPawn::MoveBack()
@@ -117,16 +125,19 @@ void AKnightPawn::MoveBack()
 		const FRotator yawRotation(0, 180, 0);
 		PaperFlipbookComponent->SetRelativeRotation(yawRotation);
 	}
+	SetPlayerPawnState(RUN);
 }
 
 void AKnightPawn::StopMove()
 {
 	CurrentVelocity = FVector::ZeroVector;
-	TRUE_ERR(ChangeFlipBook(idleAnim), u"ChangeFlipBook");
+	TRUE_ERR(ChangeFlipBook(idleAnim), u"stopmove");
+	SetPlayerPawnState(IDLE);
 }
 
 bool AKnightPawn::ChangeFlipBook(UPaperFlipbook* newPaperFlipbook) const
 {
+	print_temp("change filpbook to : %s", *newPaperFlipbook->GetName());
 	return PaperFlipbookComponent->SetFlipbook(newPaperFlipbook);
 }
 
@@ -139,24 +150,6 @@ void AKnightPawn::SetPlayerPawnState(::PlayerPawnState toState)
 			return;
 		}
 	}
+	PlayerPawnState = toState;
 }
-
-
-// void AKnightPawn::MoveXAxis(float value)
-// 这个是持续前进
-// {
-// 	if (value == 0)
-// 	{
-// 		return;
-// 	}
-// 	
-// 	CurrentVelocity.X = FMath::Clamp(value, -1.0f, 1.0f) * 100.0f;
-// 	print_temp("velocity x:%f, y:%f, z:%f", CurrentVelocity.X, CurrentVelocity.Y, CurrentVelocity.Z);
-// 	if (!PaperFlipbookComponent->SetFlipbook(runningAnim))
-// 	{
-// 		print_err("knight change flip error");
-// 	}
-// }
-
-
 

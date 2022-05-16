@@ -39,6 +39,7 @@ public:
 	void StopMove();
 	void Attack();
 	void StopAttack();
+
 	
 private:
 	bool ChangeFlipBook(UPaperFlipbook* newPaperFlipbook) const;
