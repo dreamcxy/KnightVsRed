@@ -21,6 +21,15 @@ public:
 	// Sets default values for this pawn's properties
 	AKnightPawn();
 
+public:
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Anims");
+	bool isRunnig;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Anims");
+	bool isIdle;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Anims");
+	bool isAttack;
+	
+	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -34,13 +43,14 @@ public:
 
 public:
 	// void MoveXAxis(float value);
-	void MoveForward();
+	UFUNCTION(BlueprintCallable)
+	void MoveForwardByPress();
 	void MoveBack();
 	void StopMove();
 	void Attack();
 	void StopAttack();
 
-	
+	void SwitchPaperFlipAfterPlay(UPaperFlipbook* NewPaperFlipbook);
 private:
 	bool ChangeFlipBook(UPaperFlipbook* newPaperFlipbook) const;
 	void SetPlayerPawnState(PlayerPawnState toState);
@@ -54,5 +64,4 @@ public:
 	UPaperFlipbook* attackAnim;
 
 	PlayerPawnState PlayerPawnState;
-
 };

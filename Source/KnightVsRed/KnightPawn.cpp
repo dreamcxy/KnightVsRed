@@ -67,7 +67,7 @@ void AKnightPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 
 	// PlayerInputComponent->BindAxis("xAxis", this, &AKnightPawn::MoveXAxis);
 	// 移动
-	PlayerInputComponent->BindAction("MoveForward", IE_Pressed, this, &AKnightPawn::MoveForward);
+	PlayerInputComponent->BindAction("MoveForward", IE_Pressed, this, &AKnightPawn::MoveForwardByPress);
 	PlayerInputComponent->BindAction("MoveBack", IE_Pressed, this, &AKnightPawn::MoveBack);
 
 	PlayerInputComponent->BindAction("MoveForward", IE_Released, this, &AKnightPawn::StopMove);
@@ -96,12 +96,20 @@ void AKnightPawn::StopAttack()
 	{
 		return;
 	}
+
+	PaperFlipbookComponent->OnFinishedPlaying.AddDynamic(this, &AKnightPawn::SwitchPaperFlipAfterPlay(idleAnim));
+	
+	if (PaperFlipbookComponent->IsPlaying())
+	{
+		
+		return;
+	}
 	TRUE_ERR(ChangeFlipBook(idleAnim), u"AttackOver");
 	SetPlayerPawnState(IDLE);
 }
 
 
-void AKnightPawn::MoveForward()
+void AKnightPawn::MoveForwardByPress()
 {
 	CurrentVelocity.X = FMath::Clamp(MOVE_SPEED, -1.0f, 1.0f) * MOVE_SPEED_MULTI;
 	TRUE_ERR(ChangeFlipBook(runningAnim), u"ChangeFlipBook");
@@ -113,6 +121,7 @@ void AKnightPawn::MoveForward()
 		PaperFlipbookComponent->SetRelativeRotation(yawRotation);
 	}
 	SetPlayerPawnState(RUN);
+	isRunnig = true;
 }
 
 void AKnightPawn::MoveBack()
@@ -133,12 +142,14 @@ void AKnightPawn::StopMove()
 	CurrentVelocity = FVector::ZeroVector;
 	TRUE_ERR(ChangeFlipBook(idleAnim), u"stopmove");
 	SetPlayerPawnState(IDLE);
+	isRunnig = false;
 }
 
 bool AKnightPawn::ChangeFlipBook(UPaperFlipbook* newPaperFlipbook) const
 {
 	print_temp("change filpbook to : %s", *newPaperFlipbook->GetName());
 	return PaperFlipbookComponent->SetFlipbook(newPaperFlipbook);
+	return true;
 }
 
 void AKnightPawn::SetPlayerPawnState(::PlayerPawnState toState)
@@ -153,3 +164,7 @@ void AKnightPawn::SetPlayerPawnState(::PlayerPawnState toState)
 	PlayerPawnState = toState;
 }
 
+void AKnightPawn::SwitchPaperFlipAfterPlay(UPaperFlipbook* NewPaperFlipbook)
+{
+	PaperFlipbookComponent->SetFlipbook(NewPaperFlipbook);
+}
