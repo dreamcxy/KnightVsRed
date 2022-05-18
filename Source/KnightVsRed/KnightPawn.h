@@ -50,11 +50,15 @@ public:
 	void Attack();
 	void StopAttack();
 
-	void SwitchPaperFlipAfterPlay(UPaperFlipbook* NewPaperFlipbook);
+	UFUNCTION(Category="CallBack")
+	void SwitchPaperFlipAfterPlay();
+
 private:
 	bool ChangeFlipBook(UPaperFlipbook* newPaperFlipbook) const;
 	void SetPlayerPawnState(PlayerPawnState toState);
 	PlayerPawnState GetPlayerPawnState() const { return PlayerPawnState; }
+
+	void ChoosePaperFlipbookByState();
 public:
 	FVector CurrentVelocity;
 

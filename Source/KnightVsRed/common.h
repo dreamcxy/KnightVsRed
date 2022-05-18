@@ -26,14 +26,19 @@ UE_LOG(LogTemp, Warning, TEXT(_s_), ##__VA_ARGS__); \
 		print_err("not true, fail:%s", reason);\
 	}\
 }while(0)
-	
+
+#define PRINT_SCREEN(key, _s_, ...) do{\
+	FString temp = FString::Printf(TEXT(_s_), ##__VA_ARGS__);\
+	GEngine->AddOnScreenDebugMessage(key, 1.0f, FColor::Red, temp);\
+}while (0)
+
 #define MOVE_SPEED 5.0f
 #define MOVE_SPEED_MULTI 100.0f
 
 
 enum PlayerPawnState
 {
-	IDLE,
+	IDLE = 0,
 	RUN,
 	ATTACK
 };

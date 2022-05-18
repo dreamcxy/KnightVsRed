@@ -57,7 +57,8 @@ void AKnightPawn::Tick(float DeltaTime)
 		// print_temp("new location :%s", *(newLocation.ToString()));
 		SetActorLocation(newLocation);
 	}
-	// print_temp("knight state: %d", GetPlayerPawnState());
+
+	ChoosePaperFlipbookByState();
 }
 
 // Called to bind functionality to input
@@ -87,6 +88,8 @@ void AKnightPawn::Attack()
 		return;
 	}
 	TRUE_ERR(ChangeFlipBook(attackAnim), u"AttackOn");
+	PaperFlipbookComponent->SetFlipbook(attackAnim);
+	PaperFlipbookComponent->SetLooping(false);
 	SetPlayerPawnState(ATTACK);
 }
 
@@ -96,16 +99,14 @@ void AKnightPawn::StopAttack()
 	{
 		return;
 	}
-
-	PaperFlipbookComponent->OnFinishedPlaying.AddDynamic(this, &AKnightPawn::SwitchPaperFlipAfterPlay(idleAnim));
+	// if (PaperFlipbookComponent->IsPlaying())
+	// {
+	// 	return;
+	// }
+	// SetPlayerPawnState(IDLE);
+	PaperFlipbookComponent->OnFinishedPlaying.AddDynamic(this, &AKnightPawn::SwitchPaperFlipAfterPlay);
 	
-	if (PaperFlipbookComponent->IsPlaying())
-	{
-		
-		return;
-	}
 	TRUE_ERR(ChangeFlipBook(idleAnim), u"AttackOver");
-	SetPlayerPawnState(IDLE);
 }
 
 
@@ -148,7 +149,7 @@ void AKnightPawn::StopMove()
 bool AKnightPawn::ChangeFlipBook(UPaperFlipbook* newPaperFlipbook) const
 {
 	print_temp("change filpbook to : %s", *newPaperFlipbook->GetName());
-	return PaperFlipbookComponent->SetFlipbook(newPaperFlipbook);
+	// return PaperFlipbookComponent->SetFlipbook(newPaperFlipbook);
 	return true;
 }
 
@@ -164,7 +165,45 @@ void AKnightPawn::SetPlayerPawnState(::PlayerPawnState toState)
 	PlayerPawnState = toState;
 }
 
-void AKnightPawn::SwitchPaperFlipAfterPlay(UPaperFlipbook* NewPaperFlipbook)
+void AKnightPawn::SwitchPaperFlipAfterPlay()
 {
-	PaperFlipbookComponent->SetFlipbook(NewPaperFlipbook);
+	print_temp("attack over, switch to idle");
+	SetPlayerPawnState(IDLE);
+}
+
+void AKnightPawn::ChoosePaperFlipbookByState()
+{
+	
+	GEngine->AddOnScreenDebugMessage(0, 1, FColor::Red, FString::FromInt(GetPlayerPawnState()));
+
+	PRINT_SCREEN(0, "state:%d", GetPlayerPawnState());
+	PRINT_SCREEN(1, "if loop:%d", PaperFlipbookComponent->IsLooping());
+	
+	
+	switch (GetPlayerPawnState())
+	{
+	case IDLE:
+		if (PaperFlipbookComponent->GetFlipbook() != idleAnim)
+		{
+			PaperFlipbookComponent->SetFlipbook(idleAnim);
+		}
+		if (!PaperFlipbookComponent->IsLooping())
+		{
+			PaperFlipbookComponent->SetLooping(true);
+		}
+		break;
+	
+	case RUN:
+		if (PaperFlipbookComponent->GetFlipbook() != runningAnim)
+		{
+			PaperFlipbookComponent->SetFlipbook(runningAnim);
+		}
+		if (!PaperFlipbookComponent->IsLooping())
+		{
+			PaperFlipbookComponent->SetLooping(true);
+		}
+		break;
+	default:
+		break;
+	}
 }
