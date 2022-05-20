@@ -43,7 +43,8 @@ void AKnightPawn::BeginPlay()
 
 	PaperFlipbookComponent = Cast<UPaperFlipbookComponent>(GetComponentByClass(UPaperFlipbookComponent::StaticClass()));
 	NULL_ERR(PaperFlipbookComponent);
-	SetPlayerPawnState(IDLE);
+	// SetPlayerPawnState(IDLE);
+	
 }
 
 // Called every frame
@@ -88,10 +89,24 @@ void AKnightPawn::Attack()
 		return;
 	}
 	TRUE_ERR(ChangeFlipBook(attackAnim), u"AttackOn");
-	PaperFlipbookComponent->SetFlipbook(attackAnim);
-	PaperFlipbookComponent->SetLooping(false);
+	// PaperFlipbookComponent->SetFlipbook(attackAnim);
+	// PaperFlipbookComponent->SetLooping(false);
 	SetPlayerPawnState(ATTACK);
+
+	GetWorldTimerManager().SetTimer(TimerHandle, this, &AKnightPawn::FormerAttackJudge, 0.01f, false);
 }
+
+void AKnightPawn::FormerAttackJudge()
+{
+	if (attackRangeBox != nullptr)
+	{
+		return;
+	}
+	attackRangeBox = NewObject<UBoxComponent>();
+	attackRangeBox->AttachToComponent(this->RootComponent, FAttachmentTransformRules::KeepRelativeTransform,"attackRangeBox"); 
+	attackRangeBox->SetHiddenInGame(false);
+}
+
 
 void AKnightPawn::StopAttack()
 {
@@ -104,7 +119,7 @@ void AKnightPawn::StopAttack()
 	// 	return;
 	// }
 	// SetPlayerPawnState(IDLE);
-	PaperFlipbookComponent->OnFinishedPlaying.AddDynamic(this, &AKnightPawn::SwitchPaperFlipAfterPlay);
+	// PaperFlipbookComponent->OnFinishedPlaying.AddDynamic(this, &AKnightPawn::SwitchPaperFlipAfterPlay);
 	
 	TRUE_ERR(ChangeFlipBook(idleAnim), u"AttackOver");
 }
@@ -149,8 +164,7 @@ void AKnightPawn::StopMove()
 bool AKnightPawn::ChangeFlipBook(UPaperFlipbook* newPaperFlipbook) const
 {
 	print_temp("change filpbook to : %s", *newPaperFlipbook->GetName());
-	// return PaperFlipbookComponent->SetFlipbook(newPaperFlipbook);
-	return true;
+	return PaperFlipbookComponent->SetFlipbook(newPaperFlipbook);
 }
 
 void AKnightPawn::SetPlayerPawnState(::PlayerPawnState toState)

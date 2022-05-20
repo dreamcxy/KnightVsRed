@@ -8,6 +8,7 @@
 #include "Components/InputComponent.h"
 #include "PaperFlipbook.h"
 #include "PaperFlipbookComponent.h"
+#include "Components/BoxComponent.h"
 #include "KnightPawn.generated.h"
 
 UCLASS()
@@ -50,6 +51,8 @@ public:
 	void Attack();
 	void StopAttack();
 
+	void FormerAttackJudge();
+	
 	UFUNCTION(Category="CallBack")
 	void SwitchPaperFlipAfterPlay();
 
@@ -61,6 +64,9 @@ private:
 	void ChoosePaperFlipbookByState();
 public:
 	FVector CurrentVelocity;
+	FTimerHandle TimerHandle;
+	
+	UBoxComponent* attackRangeBox = nullptr;
 
 	UPaperFlipbookComponent* PaperFlipbookComponent;
 	UPaperFlipbook* idleAnim;

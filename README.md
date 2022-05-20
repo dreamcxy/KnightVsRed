@@ -4,8 +4,8 @@ Developed with Unreal Engine 4
 
 ### 问题
 -[ ] ue4 鼠标的release触发和键盘的release触发（见5.16）
-
-
+-[ ] ue4 paperflipbook动画切换问题（见5.18， 5.17）
+ 
 ### 5.13开发记录
 * ue上传github
     - 要是碰到项目奔溃一直打不开的情况，删掉多余的文件夹，只保留content、source、config，让ue4重新编译
@@ -39,3 +39,13 @@ Developed with Unreal Engine 4
 * 上一个帧没有播完，下一个帧就替换的问题，`OnFinishedPlaying` 这个方法没法解决，它面对的是不loop的动画，但是idle是loop状态的，意味着
 要修改这个问题
   * 改了个寂寞， 要是刚开始就不管切换问题就好了
+
+### 5.20开发记录
+* 先把动画调整回原来的5.16的版本
+* 攻击判定，目前采用的这么个方法
+  * 按键0.01s之后，激活attackRange，判定对方在不在range范围之内
+  * 游戏之后，按~，输入show Collision 可以看到collision范围, 或者设置hiddenInGame为false即可
+  * boxcomponent改为动态生成，避免手动添加的component与knight的方向相反range（16,0,19）
+    * 离谱，离谱，离谱 ue4 为什么这么容易崩溃，
+    你的component是没有办法在非构造函数里面生成的嘛？？离谱， `CreateDefaultSubobject`这个函数只能在构造函数里面调用，太tm离谱了
+    可以，碰到一个同样蛋疼的老哥（https://blog.csdn.net/lqpgfz/article/details/47041261）
