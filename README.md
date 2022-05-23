@@ -53,4 +53,6 @@ Developed with Unreal Engine 4
 
 ### 5.23 开发记录
 * 正常，周末两天一点没动，无语
-* 添加collision检测
+* 添加collision检测，[collision官方文档](https://docs.unrealengine.com/4.27/zh-CN/InteractiveExperiences/Physics/Collision/Reference/)
+* ue4 里面获取component，调用到Cast函数的，不要放到构造函数里面，极其容易崩溃
+* 不手动添加collision component 是没法通过show collision展示出来的

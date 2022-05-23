@@ -63,11 +63,14 @@ private:
 	void ChoosePaperFlipbookByState();
 
 	// 碰撞检测
+	UFUNCTION()
+	virtual void OnOverlayBegin(UPrimitiveComponent *OnComponentBeginOverlap, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult);
 public:
 	FVector CurrentVelocity;
 	FTimerHandle TimerHandle;
 	
 	UBoxComponent* attackRangeBox = nullptr;
+	UBoxComponent* selfBox = nullptr;
 
 	UPaperFlipbookComponent* PaperFlipbookComponent;
 	UPaperFlipbook* idleAnim;

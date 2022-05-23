@@ -28,23 +28,31 @@ AKnightPawn::AKnightPawn()
 	idleAnim = animConstructor.idleAnim.Get();
 	runningAnim = animConstructor.runningAnim.Get();
 	attackAnim = animConstructor.attackAnim.Get();
+
+	
 }
+
 
 // Called when the game starts or when spawned
 void AKnightPawn::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// auto components = GetComponents();
-	// for (auto component : components)
-	// {
-	// 	print_temp("component name:%s", *(component->GetName()));
-	// }
+	auto components = GetComponents();
+	for (auto component : components)
+	{
+		print_temp("component name:%s", *(component->GetName()));
+	}
 
 	PaperFlipbookComponent = Cast<UPaperFlipbookComponent>(GetComponentByClass(UPaperFlipbookComponent::StaticClass()));
 	NULL_ERR(PaperFlipbookComponent);
 	// SetPlayerPawnState(IDLE);
-	
+
+	// selfBox = Cast<UBoxComponent>(GetComponentByClass(UBoxComponent::StaticClass()));
+	// NULL_ERR(selfBox);
+	// FScriptDelegate overlayBeginFunc;
+	// overlayBeginFunc.BindUFunction(this, "OnOverlapBegin");
+	// selfBox->OnComponentBeginOverlap.Add(overlayBeginFunc);
 }
 
 // Called every frame
@@ -105,7 +113,18 @@ void AKnightPawn::FormerAttackJudge()
 	attackRangeBox = NewObject<UBoxComponent>();
 	attackRangeBox->AttachToComponent(this->RootComponent, FAttachmentTransformRules::KeepRelativeTransform,"attackRangeBox"); 
 	attackRangeBox->SetHiddenInGame(false);
+
+	FScriptDelegate overlayBeginFunc;
+	overlayBeginFunc.BindUFunction(this, "OnOverlapBegin");
+	attackRangeBox->OnComponentBeginOverlap.Add(overlayBeginFunc);
 }
+
+void AKnightPawn::OnOverlayBegin(UPrimitiveComponent* OnComponentBeginOverlap, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	print_temp("overlap begin");
+}
+
+
 
 
 void AKnightPawn::StopAttack()
