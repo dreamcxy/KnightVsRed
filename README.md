@@ -50,3 +50,7 @@ Developed with Unreal Engine 4
     你的component是没有办法在非构造函数里面生成的嘛？？离谱， `CreateDefaultSubobject`这个函数只能在构造函数里面调用，太tm离谱了
     可以，碰到一个同样蛋疼的老哥（https://blog.csdn.net/lqpgfz/article/details/47041261）
     * 离谱，knight_blueprint本身是没有collision的，需要自己添加
+
+### 5.23 开发记录
+* 正常，周末两天一点没动，无语
+* 添加collision检测

@@ -60,8 +60,9 @@ private:
 	bool ChangeFlipBook(UPaperFlipbook* newPaperFlipbook) const;
 	void SetPlayerPawnState(PlayerPawnState toState);
 	PlayerPawnState GetPlayerPawnState() const { return PlayerPawnState; }
-
 	void ChoosePaperFlipbookByState();
+
+	// 碰撞检测
 public:
 	FVector CurrentVelocity;
 	FTimerHandle TimerHandle;
