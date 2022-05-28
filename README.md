@@ -6,6 +6,15 @@ Developed with Unreal Engine 4
 -[ ] ue4 鼠标的release触发和键盘的release触发（见5.16）
 -[ ] ue4 paperflipbook动画切换问题（见5.18， 5.17）
  
+### 参考文档
+- [collision官方文档](https://docs.unrealengine.com/4.27/zh-CN/InteractiveExperiences/Physics/Collision/Reference/)
+- [box collision 详细开发记录](https://zhuanlan.zhihu.com/p/26965666)
+- [附加组件的问题](https://blog.csdn.net/jfengsky/article/details/109271706)、[组件参考]（https://www.cnblogs.com/wodehao0808/p/8109463.html）
+
+### 被ue4气死的问题
+- bindFunc不做函数名检测，全靠自觉
+- 构造函数只适合做资源加载，其他的别放进去
+
 ### 5.13开发记录
 * ue上传github
     - 要是碰到项目奔溃一直打不开的情况，删掉多余的文件夹，只保留content、source、config，让ue4重新编译
@@ -56,3 +65,12 @@ Developed with Unreal Engine 4
 * 添加collision检测，[collision官方文档](https://docs.unrealengine.com/4.27/zh-CN/InteractiveExperiences/Physics/Collision/Reference/)
 * ue4 里面获取component，调用到Cast函数的，不要放到构造函数里面，极其容易崩溃
 * 不手动添加collision component 是没法通过show collision展示出来的
+
+### 5.28 开发记录
+* [box collision 详细开发记录](https://zhuanlan.zhihu.com/p/26965666)
+* `CreateDefaultSubobject` 这个函数绝对有问题，我调用的地方都会崩溃
+* [附加组件的问题](https://blog.csdn.net/jfengsky/article/details/109271706)、[组件参考]（https://www.cnblogs.com/wodehao0808/p/8109463.html）
+* 服，不太懂ue4 `BindFunction`为什么不做函数名字检测，我tm绑了一个错误的函数名，我还一直在看其他地方的问题，没搞懂，既然你要我输入名字字符串，那你tm好歹做个名字检测啊，
+不然有个屁用，我tm还一直以为是collision组件的问题（日常被ue4气死）
+* 调整5.20的思路，将attackRange在蓝图中一开始就创建好，附着为PaperFlip的子component，就能解决方向不对的问题
+* paperClip 本身带有一个碰撞，得预先关掉，不然attackRange会跟它之间发生碰撞

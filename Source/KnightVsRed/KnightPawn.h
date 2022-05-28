@@ -62,6 +62,8 @@ private:
 	PlayerPawnState GetPlayerPawnState() const { return PlayerPawnState; }
 	void ChoosePaperFlipbookByState();
 
+	void PrintComponents();
+	
 	// 碰撞检测
 	UFUNCTION()
 	virtual void OnOverlayBegin(UPrimitiveComponent *OnComponentBeginOverlap, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult);

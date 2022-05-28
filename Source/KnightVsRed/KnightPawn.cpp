@@ -32,20 +32,30 @@ AKnightPawn::AKnightPawn()
 	
 }
 
+void AKnightPawn::PrintComponents()
+{
+	auto components = GetComponents();
+	for (auto component : components)
+	{
+		print_temp("component name:%s", *(component->GetName()));
+	}
+}
+
 
 // Called when the game starts or when spawned
 void AKnightPawn::BeginPlay()
 {
 	Super::BeginPlay();
 
-	auto components = GetComponents();
-	for (auto component : components)
-	{
-		print_temp("component name:%s", *(component->GetName()));
-	}
-
 	PaperFlipbookComponent = Cast<UPaperFlipbookComponent>(GetComponentByClass(UPaperFlipbookComponent::StaticClass()));
 	NULL_ERR(PaperFlipbookComponent);
+
+	attackRangeBox = Cast<UBoxComponent>(GetComponentByClass(UBoxComponent::StaticClass()));
+	NULL_ERR(attackRangeBox);
+	attackRangeBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	FScriptDelegate overlayBeginFunc;
+	overlayBeginFunc.BindUFunction(this, "OnOverlayBegin");
+	attackRangeBox->OnComponentBeginOverlap.Add(overlayBeginFunc);
 	// SetPlayerPawnState(IDLE);
 
 	// selfBox = Cast<UBoxComponent>(GetComponentByClass(UBoxComponent::StaticClass()));
@@ -91,7 +101,6 @@ void AKnightPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 
 void AKnightPawn::Attack()
 {
-	print_temp("knight state: %d", GetPlayerPawnState());
 	if (GetPlayerPawnState() == RUN)
 	{
 		return;
@@ -106,17 +115,14 @@ void AKnightPawn::Attack()
 
 void AKnightPawn::FormerAttackJudge()
 {
+	attackRangeBox->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+
 	if (attackRangeBox != nullptr)
 	{
 		return;
 	}
-	attackRangeBox = NewObject<UBoxComponent>();
-	attackRangeBox->AttachToComponent(this->RootComponent, FAttachmentTransformRules::KeepRelativeTransform,"attackRangeBox"); 
-	attackRangeBox->SetHiddenInGame(false);
-
-	FScriptDelegate overlayBeginFunc;
-	overlayBeginFunc.BindUFunction(this, "OnOverlapBegin");
-	attackRangeBox->OnComponentBeginOverlap.Add(overlayBeginFunc);
+	PRINT_SCREEN(1 ,"attacking");
+	// PrintComponents();
 }
 
 void AKnightPawn::OnOverlayBegin(UPrimitiveComponent* OnComponentBeginOverlap, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
@@ -137,10 +143,12 @@ void AKnightPawn::StopAttack()
 	// {
 	// 	return;
 	// }
-	// SetPlayerPawnState(IDLE);
-	// PaperFlipbookComponent->OnFinishedPlaying.AddDynamic(this, &AKnightPawn::SwitchPaperFlipAfterPlay);
 	
+	// PaperFlipbookComponent->OnFinishedPlaying.AddDynamic(this, &AKnightPawn::SwitchPaperFlipAfterPlay);
 	TRUE_ERR(ChangeFlipBook(idleAnim), u"AttackOver");
+	SetPlayerPawnState(IDLE);
+	attackRangeBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
 }
 
 
@@ -148,7 +156,7 @@ void AKnightPawn::MoveForwardByPress()
 {
 	CurrentVelocity.X = FMath::Clamp(MOVE_SPEED, -1.0f, 1.0f) * MOVE_SPEED_MULTI;
 	TRUE_ERR(ChangeFlipBook(runningAnim), u"ChangeFlipBook");
-	print_temp("rotation:%s", *GetControlRotation().ToString());
+	
 	if (!PaperFlipbookComponent->GetComponentRotation().IsZero())
 	{
 		// 说明方向反了，需要转向
@@ -163,7 +171,7 @@ void AKnightPawn::MoveBack()
 {
 	CurrentVelocity.X = FMath::Clamp(-MOVE_SPEED, -1.0f, 1.0f) * MOVE_SPEED_MULTI;
 	TRUE_ERR(ChangeFlipBook(runningAnim), u"ChangeFlipBook");
-	print_temp("rotation:%s", *GetControlRotation().ToString());
+	
 	if (PaperFlipbookComponent->GetComponentRotation().IsZero())
 	{
 		const FRotator yawRotation(0, 180, 0);
@@ -182,7 +190,6 @@ void AKnightPawn::StopMove()
 
 bool AKnightPawn::ChangeFlipBook(UPaperFlipbook* newPaperFlipbook) const
 {
-	print_temp("change filpbook to : %s", *newPaperFlipbook->GetName());
 	return PaperFlipbookComponent->SetFlipbook(newPaperFlipbook);
 }
 
@@ -207,11 +214,9 @@ void AKnightPawn::SwitchPaperFlipAfterPlay()
 void AKnightPawn::ChoosePaperFlipbookByState()
 {
 	
-	GEngine->AddOnScreenDebugMessage(0, 1, FColor::Red, FString::FromInt(GetPlayerPawnState()));
+	// GEngine->AddOnScreenDebugMessage(0, 1, FColor::Red, FString::FromInt(GetPlayerPawnState()));
 
 	PRINT_SCREEN(0, "state:%d", GetPlayerPawnState());
-	PRINT_SCREEN(1, "if loop:%d", PaperFlipbookComponent->IsLooping());
-	
 	
 	switch (GetPlayerPawnState())
 	{
