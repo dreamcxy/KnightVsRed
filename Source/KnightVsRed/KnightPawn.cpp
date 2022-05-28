@@ -164,7 +164,6 @@ void AKnightPawn::MoveForwardByPress()
 		PaperFlipbookComponent->SetRelativeRotation(yawRotation);
 	}
 	SetPlayerPawnState(RUN);
-	isRunnig = true;
 }
 
 void AKnightPawn::MoveBack()
@@ -185,7 +184,6 @@ void AKnightPawn::StopMove()
 	CurrentVelocity = FVector::ZeroVector;
 	TRUE_ERR(ChangeFlipBook(idleAnim), u"stopmove");
 	SetPlayerPawnState(IDLE);
-	isRunnig = false;
 }
 
 bool AKnightPawn::ChangeFlipBook(UPaperFlipbook* newPaperFlipbook) const

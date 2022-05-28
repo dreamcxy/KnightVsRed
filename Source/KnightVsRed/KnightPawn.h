@@ -23,13 +23,8 @@ public:
 	AKnightPawn();
 
 public:
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Anims");
-	bool isRunnig;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Anims");
-	bool isIdle;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Anims");
-	bool isAttack;
-	
+	UPROPERTY(EditAnywhere, Category="SelfProperty")
+	int32 Health;
 	
 protected:
 	// Called when the game starts or when spawned

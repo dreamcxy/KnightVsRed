@@ -10,6 +10,7 @@ Developed with Unreal Engine 4
 - [collision官方文档](https://docs.unrealengine.com/4.27/zh-CN/InteractiveExperiences/Physics/Collision/Reference/)
 - [box collision 详细开发记录](https://zhuanlan.zhihu.com/p/26965666)
 - [附加组件的问题](https://blog.csdn.net/jfengsky/article/details/109271706)、[组件参考]（https://www.cnblogs.com/wodehao0808/p/8109463.html）
+- [碰撞检测](https://its201.com/article/niu2212035673/82716828、https://zhuanlan.zhihu.com/p/26965666)
 
 ### 被ue4气死的问题
 - bindFunc不做函数名检测，全靠自觉
@@ -74,3 +75,4 @@ Developed with Unreal Engine 4
 不然有个屁用，我tm还一直以为是collision组件的问题（日常被ue4气死）
 * 调整5.20的思路，将attackRange在蓝图中一开始就创建好，附着为PaperFlip的子component，就能解决方向不对的问题
 * paperClip 本身带有一个碰撞，得预先关掉，不然attackRange会跟它之间发生碰撞
+* 开始做整个游戏的manager
