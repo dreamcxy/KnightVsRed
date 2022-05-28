@@ -75,4 +75,4 @@ Developed with Unreal Engine 4
 不然有个屁用，我tm还一直以为是collision组件的问题（日常被ue4气死）
 * 调整5.20的思路，将attackRange在蓝图中一开始就创建好，附着为PaperFlip的子component，就能解决方向不对的问题
 * paperClip 本身带有一个碰撞，得预先关掉，不然attackRange会跟它之间发生碰撞
-* 开始做整个游戏的manager
+* 开始做整个游戏的manager, 看样子是要引入GameMode了
