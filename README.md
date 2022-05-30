@@ -9,12 +9,15 @@ Developed with Unreal Engine 4
 ### 参考文档
 - [collision官方文档](https://docs.unrealengine.com/4.27/zh-CN/InteractiveExperiences/Physics/Collision/Reference/)
 - [box collision 详细开发记录](https://zhuanlan.zhihu.com/p/26965666)
-- [附加组件的问题](https://blog.csdn.net/jfengsky/article/details/109271706)、[组件参考]（https://www.cnblogs.com/wodehao0808/p/8109463.html）
+- [附加组件的问题](https://blog.csdn.net/jfengsky/article/details/109271706)、[组件参考](https://www.cnblogs.com/wodehao0808/p/8109463.html)
 - [碰撞检测](https://its201.com/article/niu2212035673/82716828、https://zhuanlan.zhihu.com/p/26965666)
+- [GameMode和GameState文档](https://docs.unrealengine.com/4.26/zh-CN/InteractiveExperiences/Framework/GameMode/)
+- [加载资源](https://www.cnblogs.com/KillerAery/p/12031057.html)
 
 ### 被ue4气死的问题
 - bindFunc不做函数名检测，全靠自觉
 - 构造函数只适合做资源加载，其他的别放进去
+- ue4 删除代码太麻烦了， 有些代码文件虽然不用了，但也没删除
 
 ### 5.13开发记录
 * ue上传github
@@ -76,3 +79,7 @@ Developed with Unreal Engine 4
 * 调整5.20的思路，将attackRange在蓝图中一开始就创建好，附着为PaperFlip的子component，就能解决方向不对的问题
 * paperClip 本身带有一个碰撞，得预先关掉，不然attackRange会跟它之间发生碰撞
 * 开始做整个游戏的manager, 看样子是要引入GameMode了
+
+### 5.30 开发记录
+* worldSettings下面调整默认的GameMode，项目会默认创建一个`KnightVsRedGameModeBase`, 不需要额外创建
+* Couldn't spawn player: Failed to spawn player controller, GameSession is null 使用了GameMode，如果不指定那几个必须的类，就会出现这些问题

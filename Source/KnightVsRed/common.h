@@ -42,3 +42,9 @@ enum PlayerPawnState
 	RUN,
 	ATTACK
 };
+
+enum EPlayerBelong
+{
+	LOCAL = 0,
+	REMOTE = 1
+};
