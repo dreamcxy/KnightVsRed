@@ -9,14 +9,14 @@ template<typename T>
 class TSingleton
 {
 public:
-    static T& GetInstance() noexcept(std::is_nothrow_constructible<T>::value)
+    static T* GetInstance() noexcept(std::is_nothrow_constructible<T>::value)
     {
         // 局部static变量，保证线程安全
         static T instance;
-        return instance;
+        return &instance;
     }
 
-    virtual ~Singleton() noexcept 
+    virtual ~TSingleton() noexcept 
     {
         #ifdef DEBUG
             std::cout << "singleton destroy" << std::endl;
