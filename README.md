@@ -5,7 +5,7 @@ Developed with Unreal Engine 4
 ### 问题
 -[ ] ue4 鼠标的release触发和键盘的release触发（见5.16）
 -[ ] ue4 paperflipbook动画切换问题（见5.18， 5.17）
- 
+
 ### 参考文档
 - [collision官方文档](https://docs.unrealengine.com/4.27/zh-CN/InteractiveExperiences/Physics/Collision/Reference/)
 - [box collision 详细开发记录](https://zhuanlan.zhihu.com/p/26965666)
@@ -13,6 +13,8 @@ Developed with Unreal Engine 4
 - [碰撞检测](https://its201.com/article/niu2212035673/82716828、https://zhuanlan.zhihu.com/p/26965666)
 - [GameMode和GameState文档](https://docs.unrealengine.com/4.26/zh-CN/InteractiveExperiences/Framework/GameMode/)
 - [加载资源](https://www.cnblogs.com/KillerAery/p/12031057.html)
+- [不用锁保证线程安全](https://blog.csdn.net/shyjhyp11/article/details/112143907)
+- [linux 下守护进程](https://segmentfault.com/a/1190000022770900)
 
 ### 被ue4气死的问题
 - bindFunc不做函数名检测，全靠自觉
@@ -34,7 +36,7 @@ Developed with Unreal Engine 4
   - ue一个坑人的地方在于，虽然你没有显示include相应的头文件，但是你编译代码仍然可以通过，但你的功能可能就会没有办法运行
   - 控制移动，但是轴控制似乎会导致人物一直滑下去，xaxis不清空，因此换成了按键控制
   - 蓝图都有个defaultroot样的东西，是个小球，用于标记原点，游戏里面会看不见，最好不要删除，
-不然PaperFlipbook会作为root节点，这样加入的camera会变成它的子组件，在左右旋转flipbook的时候会跟着一起转，等于没效果
+  不然PaperFlipbook会作为root节点，这样加入的camera会变成它的子组件，在左右旋转flipbook的时候会跟着一起转，等于没效果
 * 鼠标的release操作， 很有问题，鼠标只要不动，就一直是release状态， 无语。
 * 垃圾ue4， 真的是小问题不断，我持续开了几小时，它的ui界面就不行了，菜单就没法正常稳定显示，一直会闪烁。
 
@@ -50,7 +52,7 @@ Developed with Unreal Engine 4
 
 ### 5.18开发记录
 * 上一个帧没有播完，下一个帧就替换的问题，`OnFinishedPlaying` 这个方法没法解决，它面对的是不loop的动画，但是idle是loop状态的，意味着
-要修改这个问题
+  要修改这个问题
   * 改了个寂寞， 要是刚开始就不管切换问题就好了
 
 ### 5.20开发记录
@@ -83,3 +85,9 @@ Developed with Unreal Engine 4
 ### 5.30 开发记录
 * worldSettings下面调整默认的GameMode，项目会默认创建一个`KnightVsRedGameModeBase`, 不需要额外创建
 * Couldn't spawn player: Failed to spawn player controller, GameSession is null 使用了GameMode，如果不指定那几个必须的类，就会出现这些问题
+
+### 6.16 开发记录
+
+-  前几天一直有琐事缠着，没能推进，今天开始继续推进
+- 开始部署server端代码，公司连接外部开发机是真的卡顿，只能先在开发机上部署，到时同步到腾讯云上面去了
+- 线程安全的继承单例（[不用锁保证线程安全](https://blog.csdn.net/shyjhyp11/article/details/112143907)）
