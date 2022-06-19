@@ -59,3 +59,13 @@ int32_t CServerTemplate::StartDaemonProcess(char *pszWorkDir)
     }
     return 0;
 }
+
+void CServerTemplate::MainLoop()
+{
+    OnEnterMainLoop();
+    while (true)
+    {
+        
+    }
+    
+}
