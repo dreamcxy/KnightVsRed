@@ -15,6 +15,7 @@ Developed with Unreal Engine 4
 - [加载资源](https://www.cnblogs.com/KillerAery/p/12031057.html)
 - [不用锁保证线程安全](https://blog.csdn.net/shyjhyp11/article/details/112143907)
 - [linux 下守护进程](https://segmentfault.com/a/1190000022770900)
+- [一些或许可以用的C++log库](https://www.zhihu.com/question/37640953)
 
 ### 被ue4气死的问题
 - bindFunc不做函数名检测，全靠自觉
@@ -96,3 +97,9 @@ Developed with Unreal Engine 4
 ### 6.19 开发记录
 
 - servertemplate 添加mainloop
+
+### 6.20 开发记录
+
+- 提交gametime
+- 基础架构的建设确实枯燥，但很有意思，并没有ddl，逐步了解每一个地方
+- 调研log， 感觉上可能还是要自己实现一个[log](https://www.zhihu.com/question/37640953)

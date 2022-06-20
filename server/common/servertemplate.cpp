@@ -1,4 +1,5 @@
 #include "servertemplate.h"
+#include "gametime.h"
 #include <unistd.h>
 
 
@@ -10,13 +11,20 @@ int32_t CServerTemplater::Init()
         return -1;
     }
 
+    m_poGameTime = TSingleton<CGameTime>::GetInstance();
+    if (unlikely(!m_poGameTime))
+    {
+        assert(false);
+        return -1;
+    }
+
     if (OnInit() != 0)
     {
         // 初始化失败
         assert(false);
         return -1;
     }
-
+    
     return 0;
 }
 
@@ -62,10 +70,18 @@ int32_t CServerTemplate::StartDaemonProcess(char *pszWorkDir)
 
 void CServerTemplate::MainLoop()
 {
-    OnEnterMainLoop();
+    int32_t nStartTime = m_poGameTime->GetCurSecond();
+    if (OnEnterMainLoop() != 0 )
+    {
+        assert(false);
+        return;
+    }
     while (true)
     {
+        m_poGameTime->Update();
+        OnTickBegin();
         
+        OnTickEnd();
     }
     
 }
