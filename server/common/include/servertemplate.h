@@ -29,6 +29,9 @@ public:
     // 每一帧结束时调用
     virtual int32_t OnTickEnd() { return 0; }
 
+    // 处理收到的客户端发包
+    virtual void HandleMsg();
+
 private:
     int32_t StartDaemonProcess(char *pszWorkDir);
 

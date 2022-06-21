@@ -103,3 +103,8 @@ Developed with Unreal Engine 4
 - 提交gametime
 - 基础架构的建设确实枯燥，但很有意思，并没有ddl，逐步了解每一个地方
 - 调研log， 感觉上可能还是要自己实现一个[log](https://www.zhihu.com/question/37640953)
+
+### 6.21 开发记录
+
+- 引入epoll
+- 包装socket
