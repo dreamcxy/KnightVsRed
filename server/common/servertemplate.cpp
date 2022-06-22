@@ -1,5 +1,6 @@
 #include "servertemplate.h"
 #include "gametime.h"
+#include "servermanager.h"
 #include <unistd.h>
 
 
@@ -13,6 +14,18 @@ int32_t CServerTemplater::Init()
 
     m_poGameTime = TSingleton<CGameTime>::GetInstance();
     if (unlikely(!m_poGameTime))
+    {
+        assert(false);
+        return -1;
+    }
+
+    m_poServerMgr = TSingleton<CServerManager>::GetInstance();
+    if (unlikely(!m_poServerMgr))
+    {
+        assert(false);
+        return -1;
+    }
+    if (m_poServerMgr->Initialize() != 0)
     {
         assert(false);
         return -1;
@@ -80,8 +93,13 @@ void CServerTemplate::MainLoop()
     {
         m_poGameTime->Update();
         OnTickBegin();
-        
+
         OnTickEnd();
     }
     
+}
+
+int32_t CServerTemplate::HandleMsg()
+{
+
 }

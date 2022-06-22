@@ -1,6 +1,13 @@
+//
+// Created by chenxiaoyu5 on 2022/6/22.
+//
 /**
  *  server端的时间管理
 **/
+
+
+#ifndef SERVER_GAMETIME_H
+#define SERVER_GAMETIME_H
 
 #include "singleton.h"
 #include <sys/time.h>
@@ -22,3 +29,5 @@ public:
 private:
     struct timeval m_stCurTimeVal;
 }
+
+#endif //SERVER_GAMETIME_H

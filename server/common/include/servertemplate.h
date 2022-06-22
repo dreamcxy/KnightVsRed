@@ -4,6 +4,7 @@
 **/
 
 class CGameTime;
+class CServerManger;
 
 class CServerTemplate 
 {
@@ -37,5 +38,6 @@ private:
 
 public:
     bool m_bIsDaemon;   // 是否启动之后用变成守护进程
-    CGameTime *m_poGameTime = nullptr;
+    CGameTime*          m_poGameTime = nullptr;
+    CServerManager*     m_poServerMgr = nullptr;
 }

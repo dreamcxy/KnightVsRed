@@ -16,11 +16,13 @@ Developed with Unreal Engine 4
 - [不用锁保证线程安全](https://blog.csdn.net/shyjhyp11/article/details/112143907)
 - [linux 下守护进程](https://segmentfault.com/a/1190000022770900)
 - [一些或许可以用的C++log库](https://www.zhihu.com/question/37640953)
+- [无锁队列1](https://www.stubbornhuang.com/796/)、 [无锁队列2](https://blog.51cto.com/quantfabric/2588193)
 
-### 被ue4气死的问题
+### 开发中想死的瞬间
 - bindFunc不做函数名检测，全靠自觉
 - 构造函数只适合做资源加载，其他的别放进去
 - ue4 删除代码太麻烦了， 有些代码文件虽然不用了，但也没删除
+- 右手大拇指受伤了，按不了空格键，改为左手大拇指
 
 ### 5.13开发记录
 * ue上传github
@@ -108,3 +110,8 @@ Developed with Unreal Engine 4
 
 - 引入epoll
 - 包装socket
+
+### 6.22 开发记录
+
+- 服务端框架梳理
+- 引入无锁队列
