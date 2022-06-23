@@ -1,26 +1,29 @@
 #include "servertemplate.h"
 #include "gametime.h"
 #include "servermanager.h"
+#include "networkmanager.h"
 #include <unistd.h>
+#include <stdio.h>
+#include <cassert>
 
 
-int32_t CServerTemplater::Init()
+int32_t CServerTemplate::Init()
 {
-    if (StartDemonProcess() != 0)
+    if (StartDaemonProcess() != 0)
     {
         assert(false);
         return -1;
     }
 
     m_poGameTime = TSingleton<CGameTime>::GetInstance();
-    if (unlikely(!m_poGameTime))
+    if (!m_poGameTime)
     {
         assert(false);
         return -1;
     }
 
     m_poServerMgr = TSingleton<CServerManager>::GetInstance();
-    if (unlikely(!m_poServerMgr))
+    if (!m_poServerMgr)
     {
         assert(false);
         return -1;
@@ -30,6 +33,8 @@ int32_t CServerTemplater::Init()
         assert(false);
         return -1;
     }
+
+    InitNetwork();
 
     if (OnInit() != 0)
     {
@@ -78,6 +83,10 @@ int32_t CServerTemplate::StartDaemonProcess(char *pszWorkDir)
             return -1;
         }
     }
+
+    fclose(stdin);
+    fclose(stdout);
+    fclose(stderr);
     return 0;
 }
 
@@ -93,7 +102,12 @@ void CServerTemplate::MainLoop()
     {
         m_poGameTime->Update();
         OnTickBegin();
-
+        int32_t nMsgCount = HandleMsg();
+        if (nMsgCount == 0)
+        {
+            // 当前帧没有处理消息，就休息一会儿，避免CPU占满100%
+            m_poNetworkMgr
+        }
         OnTickEnd();
     }
     
@@ -102,4 +116,20 @@ void CServerTemplate::MainLoop()
 int32_t CServerTemplate::HandleMsg()
 {
 
+}
+
+int32_t CServerTemplate::InitNetwork()
+{
+    m_poNetworkMgr = new CNetworkManager();
+    if (!m_poNetworkMgr)
+    {
+        assert(false);
+        return -1;
+    }
+    if (m_poNetworkMgr->Initialize() != 0)
+    {
+        assert(false);
+        return -1;
+    }
+    return 0;
 }

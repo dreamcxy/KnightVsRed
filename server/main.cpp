@@ -11,7 +11,7 @@ void Producer(KFIFO::STKFifo* pstFifo)
     while (i < N)
     {
         char buffer[20];
-        snprintf(buffer, sizeof(buffer), "hello world :%d", i);
+        snprintf(buffer, sizeof(buffer), "hello world");
         KFIFO::KFifoPut(pstFifo, buffer, sizeof(buffer));
         i++;
     }
@@ -23,7 +23,7 @@ void Consumer(KFIFO::STKFifo* pstFifo)
     while (i < N)
     {
         char buffer[20];
-        KFIFO::KFifoGet(pstFifo, buffer, 20);
+        KFIFO::KFifoGet(pstFifo, buffer, 11);
         std::cout << buffer << std::endl;
         i ++;
     }
@@ -32,7 +32,7 @@ void Consumer(KFIFO::STKFifo* pstFifo)
 int main()
 {
     uint32_t size = 10;
-    auto pstFifo = KFIFO::KFifoAlloc(10);
+    auto pstFifo = KFIFO::KFifoAlloc(size);
     if (pstFifo == nullptr)
     {
         assert(false);

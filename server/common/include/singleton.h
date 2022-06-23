@@ -35,7 +35,7 @@ protected:
             std::cout << "singleton construct" << std::endl;
         #endif
     }
-}
+};
 
 #define DECLARE_CLASS_SINGLETON(type) \
     friend class TSinglton<type>; 

@@ -3,8 +3,11 @@
 Developed with Unreal Engine 4
 
 ### 问题
--[ ] ue4 鼠标的release触发和键盘的release触发（见5.16）
--[ ] ue4 paperflipbook动画切换问题（见5.18， 5.17）
+- [ ] ue4 鼠标的release触发和键盘的release触发（见5.16）
+
+- [ ] ue4 paperflipbook动画切换问题（见5.18， 5.17）
+
+- [ ] rpc这个用法还没有尝试过 
 
 ### 参考文档
 - [collision官方文档](https://docs.unrealengine.com/4.27/zh-CN/InteractiveExperiences/Physics/Collision/Reference/)
@@ -17,6 +20,7 @@ Developed with Unreal Engine 4
 - [linux 下守护进程](https://segmentfault.com/a/1190000022770900)
 - [一些或许可以用的C++log库](https://www.zhihu.com/question/37640953)
 - [无锁队列1](https://www.stubbornhuang.com/796/)、 [无锁队列2](https://blog.51cto.com/quantfabric/2588193)
+- [服务端架构模型](https://github.com/balloonwj/CppGuide/blob/master/articles/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E4%B8%93%E9%A2%98/12%E7%BB%8F%E5%85%B8%E6%B8%B8%E6%88%8F%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E6%9E%B6%E6%9E%84%E6%A6%82%E8%BF%B0.md)
 
 ### 开发中想死的瞬间
 - bindFunc不做函数名检测，全靠自觉
@@ -113,5 +117,12 @@ Developed with Unreal Engine 4
 
 ### 6.22 开发记录
 
-- 服务端框架梳理
+- 服务端框架梳理，最后选择采用异步-固定多线程，单进程内部有多个不同责任的子线程，线程与线程之间通过无锁队列通信
 - 引入无锁队列，引入了kfifo，幸好我只是在linux上的服务器，要考虑跨平台，跨编译器啥的可真是太复杂了
+- kfifo的开发并没有使用之前包装成类的做法，仿照linux，kfifo属性包装成struct， 但是具体的操作函数并没有放在struct里面，而是作为普通函数在同一个namespace下面
+
+### 6.23 开发记录
+
+- 开发进度有点慢，虽然每天都有提交，但有时候只是写了个函数名就提交了，真的是文件夹建好了
+- 测试kfifo，逐步开始对现有代码进行编译
+- 调整代码结构

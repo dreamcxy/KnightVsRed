@@ -1,10 +1,13 @@
+#include <cstdint>
+
 /**
  * server 模板
  * 
 **/
 
 class CGameTime;
-class CServerManger;
+class CServerManager;
+class CNetworkManager;
 
 class CServerTemplate 
 {
@@ -31,13 +34,16 @@ public:
     virtual int32_t OnTickEnd() { return 0; }
 
     // 处理收到的客户端发包
-    virtual void HandleMsg();
+    virtual int32_t HandleMsg();
 
 private:
-    int32_t StartDaemonProcess(char *pszWorkDir);
+    int32_t StartDaemonProcess(char *pszWorkDir = nullptr);
+
+    int32_t InitNetwork();
 
 public:
     bool m_bIsDaemon;   // 是否启动之后用变成守护进程
     CGameTime*          m_poGameTime = nullptr;
     CServerManager*     m_poServerMgr = nullptr;
+    CNetworkManager*    m_poNetworkMgr = nullptr;
 }
