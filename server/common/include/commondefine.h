@@ -9,10 +9,19 @@
 #include <cstdint>
 #include <string>
 
-struct STServerNetConfig
+// 网络连接对应的ip:port
+struct STAddressConfig
 {
     std::string m_strIP;
     int32_t     m_nPort;
 };
+
+// listensocket最大监听数目
+#define MAX_LISTEN_SOCK_QUEUE (1024)
+
+// epoll 监听的最大事件数目
+#define MAX_EVENT_LISTEN_NUM (100000)
+
+
 
 #endif //SERVER_COMMONDEFINE_H
