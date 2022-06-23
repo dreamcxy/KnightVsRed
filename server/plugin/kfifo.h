@@ -25,9 +25,6 @@ out                        in                     size
 
 namespace KFIFO
 {
-
-    #define min(x,y) ({ auto _x = (x); auto _y = (y); (void) (&_x == &_y); _x < _y ? _x : _y; })
-
     static inline int fls(int x)
     {
         int position;
