@@ -96,9 +96,58 @@ int32_t CNetworkManager::InitEpoll(const STAddressConfig& stConfig)
         for (int i = 0; i < nWaitCount; i++)
         {
             auto events = arrEvent[i].events;
-            if (events & EPOLLERR || events & EPOLLHUP || (! events & EPOLLIN))
+            char szHostBuf[NI_MAXHOST];
+            if (events & EPOLLERR || events & EPOLLHUP || (!events & EPOLLIN))
             {
-                close()
+                close(arrEvent[i].data.fd);
+                continue;
+            }
+            else if (nListenSockFd == arrEvent[i].data.fd)
+            {
+                // 表明是accept事件
+                for (;;)
+                {
+                    // 由于是边缘触发，因此要循环读取
+                    struct sockaddr stInAddr = {0};
+                    socklen_t nLenStInAddr = sizeof(stInAddr);
+                    int32_t nAcceptFd = accept(nListenSockFd, &stInAddr, &nLenStInAddr);
+                    if (nAcceptFd == -1)
+                    {
+                        // todocxy 补充error日志
+                        break;
+                    }
+                    if (SetSocketNonBlocking(nAcceptFd) != 0)
+                    {
+                        assert(false);
+                        break;
+                    }
+                    stEv.events = EPOLLIN|EPOLLOUT|EPOLLET;
+                    stEv.data.fd = nAcceptFd;
+                    if (epoll_ctl(nEpollFd, EPOLL_CTL_ADD, nAcceptFd, &stEv) == -1)
+                    {
+                        assert(false);
+                        exit(EXIT_FAILURE);
+                    }
+                }
+            }
+            else if (arrEvent[i].events & EPOLLIN)
+            {
+                // 读操作
+                auto iter = m_mapSocketFdToConnection.find(arrEvent[i].data.fd);
+                if (iter == m_mapSocketFdToConnection.end())
+                {
+                    assert(false);
+                    continue;
+                }
+                iter->second.OnRecv();
+            }
+            else if (arrEvent[i].events & EPOLLOUT)
+            {
+                // 写操作
+            }
+            else
+            {
+
             }
         }
     }

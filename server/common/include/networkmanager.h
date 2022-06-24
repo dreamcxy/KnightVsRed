@@ -1,6 +1,8 @@
 #pragma once
 #include <cstdint>
+#include <map>
 #include "commondefine.h"
+#include "connection.h"
 
 /**
  *  用来做网络管理的
@@ -22,4 +24,7 @@ private:
     // 初始化底层epoll
     int32_t InitEpoll(const STAddressConfig& );
     int32_t SetSocketNonBlocking(int32_t nSocketFd);
+
+private:
+    std::map<int32_t ,CConnetion> m_mapSocketFdToConnection;    // <socketFd, connection>
 }
