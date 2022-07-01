@@ -24,8 +24,8 @@ public:
     }
 
     // 屏蔽直接创建实例的操作，想要获得此类只能通过GetInstance()方法
-    TSingleton(const Singletor &) = delete;
-    TSingleton &operator=(const Singleton &) = delete;
+    TSingleton(const TSingleton &) = delete;
+    TSingleton &operator=(const TSingleton &) = delete;
 
 protected:
     // 采用protected的目的是为了派生类可以继承它

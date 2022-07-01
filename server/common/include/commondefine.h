@@ -26,4 +26,19 @@ struct STAddressConfig
 // 日志buffer最大
 #define MAX_LOG_BUFFER_SIZE (1024 * 1024)
 
+// 默认日志目录名字
+#define DEFAULT_LOG_DIR "log"
+
+
+// 日志等级
+enum E_LOG_LEVEL
+{
+    LOG_LEVEL_INFO = 0,
+    LOG_LEVEL_WARN,
+    LOG_LEVEL_ERROR
+};
+
+
+
 #endif //SERVER_COMMONDEFINE_H
+

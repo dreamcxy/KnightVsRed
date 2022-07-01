@@ -10,71 +10,58 @@
 #include <kfifo.h>
 #include <map>
 #include "singleton.h"
+#include "handler.h"
 
-enum E_LOG_LEVEL
+template <typename Handler>
+class SLog : public TSingleton<SLog<Handler>>
 {
-    LOG_LEVEL_INFO,
-    LOG_LEVEL_WARN,
-    LOG_LEVEL_ERROR
-};
-
-class BaseHandler
-{
-
-public:
-    BaseHandler() {}
-    virtual ~BaseHandler() {}
-
-public:
-    virtual void Log(char* pszContent);
-    virtual void SetLevel(E_LOG_LEVEL eLogLevel) {m_eLogLevel = eLogLevel;}
-private:
-    // 是否满足轮转条件，默认不论转
-    virtual bool IfSatisfyRotating() { return true;}
-    virtual void Init(const std::string& strDir, const std::string& strPrefix);
-
-private:
-    E_LOG_LEVEL     m_eLogLevel;
-    BaseLogBuffer*  m_pstLogBuffer;
-};
-
-class BaseLogBuffer
-{
-    // 默认是直接char*
-
-};
-
-class RotatingFileHandler : BaseHandler
-{
-    // 根据文件大小进行轮转
-public:
-
-private:
-
-};
-
-class RotatingFileTimeHandler : BaseHandler
-{
-    // 根据文件时间进行轮转
-};
-
-class SLog
-{
+    DECLARE_CLASS_SINGLETON(SLog<Handler>)
 public:
     int32_t Log(E_LOG_LEVEL eLogLevel, char* pszContent);
-    void InitLog(char* pszDir, char* pszPrefix);
+    int32_t InitLog(char* pszDir, char* pszPrefix);
 
     // 根据时间将缓冲区的内容输出
     void Update();
+    void SetLevelToHandler(E_LOG_LEVEL eLogLevel, Handler* pstHandler) { m_mapLevelToHandler[eLogLevel] = pstHandler;}
+private:
 
-    void SetLevelToHandler(E_LOG_LEVEL eLogLevel, BaseHandler* pstHandler) { m_mapLevelToHandler[eLogLevel] = pstHandler;}
+    Handler* GetHandlerByLevel(E_LOG_LEVEL eLogLevel) { return m_mapLevelToHandler[eLogLevel];}
 private:
-    BaseHandler* GetHandlerByLevel(E_LOG_LEVEL eLogLevel) { return m_mapLevelToHandler[eLogLevel];}
-private:
-    std::map<E_LOG_LEVEL, BaseHandler*> m_mapLevelToHandler;        // <日志等级，日志处理方式>
+
+    std::map<E_LOG_LEVEL , Handler* > m_mapLevelToHandler;        // <日志等级，日志处理方式>
 };
 
+template <typename Handler>
+int32_t SLog<Handler>::InitLog(char *pszDir, char *pszPrefix)
+{
+    for (auto e = LOG_LEVEL_INFO; e <= LOG_LEVEL_ERROR; e = (E_LOG_LEVEL)(e + 1))
+    {
+        // 默认初始化不同level的日志的handler
+        m_mapLevelToHandler[e] = new FileHandler<CharLogBuffer>(e);
+        m_mapLevelToHandler[e]->Init(nullptr, nullptr);
+    }
 
+    return 0;
+}
 
+template <typename Handler>
+int32_t SLog<Handler>::Log(E_LOG_LEVEL eLogLevel, char *pszContent)
+{
+    auto pstHandler = GetHandlerByLevel(eLogLevel);
+    if (!pstHandler)
+    {
+        return -1;
+    }
+    pstHandler->Log(pszContent);
+}
+
+template <typename Handler>
+void SLog<Handler>::Update()
+{
+    for (auto handler : m_mapLevelToHandler)
+    {
+
+    }
+}
 
 #endif //SERVER_LOGGER_H

@@ -45,10 +45,9 @@ int main()
 //
 //    producer.join();
 //    consumer.join();
-
-    SLog* pstLog = new SLog();
-    char* pszDir = "..";
-
+//
+//    SLog* pstLog = new SLog();
+//    char* pszDir = "..";
 
 
 
