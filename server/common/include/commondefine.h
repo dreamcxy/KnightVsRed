@@ -23,5 +23,7 @@ struct STAddressConfig
 #define MAX_EVENT_LISTEN_NUM (100000)
 
 
+// 日志buffer最大
+#define MAX_LOG_BUFFER_SIZE (1024 * 1024)
 
 #endif //SERVER_COMMONDEFINE_H

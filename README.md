@@ -21,6 +21,7 @@ Developed with Unreal Engine 4
 - [一些或许可以用的C++log库](https://www.zhihu.com/question/37640953)
 - [无锁队列1](https://www.stubbornhuang.com/796/)、 [无锁队列2](https://blog.51cto.com/quantfabric/2588193)
 - [服务端架构模型](https://github.com/balloonwj/CppGuide/blob/master/articles/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E4%B8%93%E9%A2%98/12%E7%BB%8F%E5%85%B8%E6%B8%B8%E6%88%8F%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E6%9E%B6%E6%9E%84%E6%A6%82%E8%BF%B0.md)
+- [无锁编程](https://www.cnblogs.com/gaochundong/p/lock_free_programming.html)
 
 ### 开发中想死的瞬间
 - bindFunc不做函数名检测，全靠自觉
@@ -135,3 +136,11 @@ Developed with Unreal Engine 4
 
 - 最近有点沉迷帝国时代，开发缓慢
 - 工作上python也实现了一套类似的，不得不说python的开发速度还是要比c++快的
+- 每次用c++从0开始写框架真的要哭，不愧是军工箱，真的是粗糙，还得不断看别人代码，才能知道怎么设计最好，并且最蛋疼的是，因为很多库要支持跨平台，代码写的真的是复杂的一笔，甚至有些引用了其他人的库，比如boost， 头痛
+- python用就用了第三方了， 安装配置都要比c++容易的多，并且更加没有负罪感，c++要是用了就感觉，底层还在用，要你做什么
+- c++的每一处的设计都得从设计图开始，不然最后很容易理不清关系
+
+### 6.30 开发记录
+
+- log日志，以及日志配置化，说的容易
+- md, 昨天的开发忘记提交了，少了一个绿点

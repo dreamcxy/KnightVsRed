@@ -3,6 +3,7 @@
 #include <cassert>
 #include <thread>
 #include "kfifo.h"
+#include "common/include/logger.h"
 
 #define N ((1 << 20))
 void Producer(KFIFO::STKFifo* pstFifo)
@@ -31,19 +32,25 @@ void Consumer(KFIFO::STKFifo* pstFifo)
 
 int main()
 {
-    uint32_t size = 10;
-    auto pstFifo = KFIFO::KFifoAlloc(size);
-    if (pstFifo == nullptr)
-    {
-        assert(false);
-        return -1;
-    }
+//    uint32_t size = 10;
+//    auto pstFifo = KFIFO::KFifoAlloc(size);
+//    if (pstFifo == nullptr)
+//    {
+//        assert(false);
+//        return -1;
+//    }
+//
+//    std::thread producer(Producer, pstFifo);
+//    std::thread consumer(Consumer, pstFifo);
+//
+//    producer.join();
+//    consumer.join();
 
-    std::thread producer(Producer, pstFifo);
-    std::thread consumer(Consumer, pstFifo);
+    SLog* pstLog = new SLog();
+    char* pszDir = "..";
 
-    producer.join();
-    consumer.join();
+
+
 
     return 0;
 }
