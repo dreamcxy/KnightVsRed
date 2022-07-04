@@ -36,7 +36,8 @@ public:
 public:
     void Log(char* pszContent);
     void Init(char* pszDir, char* pszPrefix);
-
+    // 将内容写入
+    void Flush();
     void Update();
 private:
     E_LOG_LEVEL     m_eLogLevel;
@@ -49,7 +50,7 @@ void FileHandler<BufferT>::Log(char *pszContent)
     if (m_pstLogBuffer->OverFlow())
     {
         // 容量超过了预设上限
-        m_pstLogBuffer->LogDirect(pszContent);
+        // todocxy 由manager写入文件
         m_pstLogBuffer->Clear();
         return;
     }
@@ -72,7 +73,11 @@ void FileHandler<BufferT>::Init(char *pszDir, char *pszPrefix)
     m_pstLogBuffer->Init();
 }
 
+template <typename BufferT>
+void FileHandler<BufferT>::Flush()
+{
 
+}
 
 
 template <typename BufferT>

@@ -17,6 +17,14 @@ class SLog : public TSingleton<SLog<Handler>>
 {
     DECLARE_CLASS_SINGLETON(SLog<Handler>)
 public:
+    ~SLog()
+    {
+        for (auto handler : m_mapLevelToHandler)
+        {
+            handler->second->Flush();
+        }
+    }
+
     int32_t Log(E_LOG_LEVEL eLogLevel, char* pszContent);
     int32_t InitLog(char* pszDir, char* pszPrefix);
 
@@ -60,8 +68,9 @@ void SLog<Handler>::Update()
 {
     for (auto handler : m_mapLevelToHandler)
     {
-
+        handler->Update();
     }
 }
+
 
 #endif //SERVER_LOGGER_H
