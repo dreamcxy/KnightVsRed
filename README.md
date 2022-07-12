@@ -23,6 +23,7 @@ Developed with Unreal Engine 4
 - [服务端架构模型](https://github.com/balloonwj/CppGuide/blob/master/articles/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E4%B8%93%E9%A2%98/12%E7%BB%8F%E5%85%B8%E6%B8%B8%E6%88%8F%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E6%9E%B6%E6%9E%84%E6%A6%82%E8%BF%B0.md)
 - [无锁编程](https://www.cnblogs.com/gaochundong/p/lock_free_programming.html)
 - [关于c++模板声明和定义拆分开的问题](https://www.zhihu.com/question/20630104)
+- [关于epoll监听关闭的问题](https://www.zhihu.com/question/289965746)
 
 ### 开发中想死的瞬间
 - bindFunc不做函数名检测，全靠自觉
@@ -152,3 +153,16 @@ Developed with Unreal Engine 4
 - 将各种buffer拆分开，原本charbuffer，和 fifobuffer都是baseBuffer的继承类，现在改为，handler<Buffer>的形式，利用萃取统一charBuff和fifoBuffer的接口。
 - logger.h , handler.h, buffer.h 相互独立开来
 - 还是需要引入单元测试
+
+### 7.8 开发记录
+
+- 其实epoll监听关闭还是不是那么靠谱，靠谱点的做法还是要靠双端的心跳来维持
+- 最近的开发是在python上的， 就没有在这个地方同步进度
+
+### 7.9 开发记录
+
+- ctrl+c直接停止的是main进程，里面的循环没有停止的话， 是没有办法停止的
+
+### 7.12 开发记录
+
+-  
