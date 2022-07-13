@@ -7,6 +7,7 @@
 
 
 #include "buffer.h"
+#include <fstream>
 
 const std::string& GetPrefixByLevel(E_LOG_LEVEL eLogLevel)
 {
@@ -42,6 +43,9 @@ public:
 private:
     E_LOG_LEVEL     m_eLogLevel;
     BufferT*        m_pstLogBuffer;
+
+    char            m_szDir[MAX_LOG_FILE_DIR_PREFIX_SIZE];           // 文件夹根目录
+    char            m_szPrefix[MAX_LOG_FILE_DIR_PREFIX_SIZE];        // 文件的前缀
 };
 
 template <typename BufferT>
@@ -51,6 +55,21 @@ void FileHandler<BufferT>::Log(char *pszContent)
     {
         // 容量超过了预设上限
         // todocxy 由manager写入文件
+        char* pszFile =;
+        std::ofstream oFile;
+        try
+        {
+            oFile.open(pszFile, std::ios::out);
+            for ()
+            {
+
+            }
+        }
+        catch (const std::exception &e)
+        {
+
+        }
+        oFile.close();
         m_pstLogBuffer->Clear();
         return;
     }
@@ -63,11 +82,11 @@ void FileHandler<BufferT>::Init(char *pszDir, char *pszPrefix)
     // 默认输出到本目录下面, 以level作为前缀
     if (pszDir == nullptr)
     {
-        strcpy(pszDir, DEFAULT_LOG_DIR);
+        strcpy(m_pszDir, DEFAULT_LOG_DIR);
     }
     if (pszPrefix == nullptr)
     {
-        strcpy(pszPrefix, GetPrefixByLevel(m_eLogLevel));
+        strcpy(m_pszPrefix, GetPrefixByLevel(m_eLogLevel));
     }
     // 萃取出来
     m_pstLogBuffer->Init();

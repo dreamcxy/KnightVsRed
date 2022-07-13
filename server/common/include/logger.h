@@ -46,7 +46,7 @@ int32_t SLog<Handler>::InitLog(char *pszDir, char *pszPrefix)
     {
         // 默认初始化不同level的日志的handler
         m_mapLevelToHandler[e] = new FileHandler<CharLogBuffer>(e);
-        m_mapLevelToHandler[e]->Init(nullptr, nullptr);
+        m_mapLevelToHandler[e]->Init(pszDir, pszPrefix);
     }
 
     return 0;

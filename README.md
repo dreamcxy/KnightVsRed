@@ -24,6 +24,7 @@ Developed with Unreal Engine 4
 - [无锁编程](https://www.cnblogs.com/gaochundong/p/lock_free_programming.html)
 - [关于c++模板声明和定义拆分开的问题](https://www.zhihu.com/question/20630104)
 - [关于epoll监听关闭的问题](https://www.zhihu.com/question/289965746)
+- [网络通讯使用char](https://www.zhihu.com/question/361487567)、[针对string的优化思路](https://codeantenna.com/a/f44gKMl0Ra)
 
 ### 开发中想死的瞬间
 - bindFunc不做函数名检测，全靠自觉
@@ -165,4 +166,4 @@ Developed with Unreal Engine 4
 
 ### 7.12 开发记录
 
--  
+-  char* 、char[] 和 string各有优劣，在涉及网络传输的时候不要用string，其他时候，其实用string也无妨， 但string的查找效率会很慢
