@@ -2,7 +2,7 @@
 // Created by chenxiaoyu5 on 2022/7/1.
 //
 
-#include "buffer.h"
+#include "include/buffer.h"
 #include <string.h>
 
 void CharLogBuffer::InitBuffer()

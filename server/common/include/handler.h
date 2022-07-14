@@ -54,25 +54,26 @@ void FileHandler<BufferT>::Log(char *pszContent)
     if (m_pstLogBuffer->OverFlow())
     {
         // 容量超过了预设上限
-        // todocxy 由manager写入文件
-        char* pszFile =;
+        char szFilePath[MAX_LOG_FILE_DIR_PREFIX_SIZE];
+        snprintf("%s/%s", sizeof(szFilePath), m_szDir, m_szPrefix);
+
         std::ofstream oFile;
         try
         {
-            oFile.open(pszFile, std::ios::out);
-            for ()
-            {
-
-            }
+            oFile.open(szFilePath, std::ios::out);
+            oFile << pszContent << std::endl;
         }
         catch (const std::exception &e)
         {
-
+            // todocxy 补上错误日志
+            assert(false);
+            return;
         }
         oFile.close();
         m_pstLogBuffer->Clear();
         return;
     }
+    // todocxy 这边也直接写入文件
     m_pstLogBuffer->Put(pszContent);
 }
 
@@ -82,14 +83,24 @@ void FileHandler<BufferT>::Init(char *pszDir, char *pszPrefix)
     // 默认输出到本目录下面, 以level作为前缀
     if (pszDir == nullptr)
     {
-        strcpy(m_pszDir, DEFAULT_LOG_DIR);
+        strcpy(m_szDir, DEFAULT_LOG_DIR);
     }
     if (pszPrefix == nullptr)
     {
-        strcpy(m_pszPrefix, GetPrefixByLevel(m_eLogLevel));
+        strcpy(m_szPrefix, GetPrefixByLevel(m_eLogLevel));
     }
     // 萃取出来
     m_pstLogBuffer->Init();
+}
+
+template <typename BufferT>
+void FileHandler<BufferT>::Update()
+{
+    // todocxy 定时写入
+    if (!m_pstLogBuffer->empty())
+    {
+        Log("");
+    }
 }
 
 template <typename BufferT>

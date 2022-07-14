@@ -23,10 +23,12 @@ public:
     void Clear();
     // 添加内容
     void Put(char* pszContent);
+
+    bool empty() {return m_nUsed == 0; };
 private:
     char* m_pszBuffer;
     int32_t m_nSize = MAX_LOG_BUFFER_SIZE;    // 上限
-    int32_t m_nUsed;
+    int32_t m_nUsed;                          // 已经使用了的长度
 };
 
 
