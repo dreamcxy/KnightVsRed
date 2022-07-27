@@ -3,6 +3,8 @@
 #include <cassert>
 #include <thread>
 #include <fstream>
+#include "common/include/fileraii.h"
+#include "common/include/raii.h"
 //#include "kfifo.h"
 //#include "common/include/logger.h"
 
@@ -31,6 +33,12 @@
 //    }
 //};
 using namespace std;
+
+// 测试raii管理file
+void test_fileraii();
+// 测试通用的raii管理类
+void test_commonraii();
+
 int main()
 {
 //    uint32_t size = 10;
@@ -47,23 +55,26 @@ int main()
 //    producer.join();
 //    consumer.join();
 
+//    test_fileraii();
 
-// 测试写入文件
-    std::ofstream file;
-    file.open("test_log.txt", ios::out | ios::app);
-
-    if (!file)
-    {
-        cout << "need to create file first" << endl;
-        return 0;
-    }
-    file << "hello world" << " \n";
-
-    const char* buffer = "hell";
-    file << buffer;
-
-    file.close();
-
-
+    test_commonraii();
     return 0;
+}
+///////////////////////////////// 测试区域 ///////////////////////////////////////////
+void test_fileraii()
+{
+    // 通过
+    CFileRaii cFileRaii("log", "log/test_log.txt");
+    cFileRaii.write("hello world");
+    cFileRaii.write("plog");
+}
+
+void test_commonraii()
+{
+    std::ofstream file("log/test_log.txt");
+    CRAIIManager file_raii([&file]()
+    {
+        if (file.is_open())  file.close();
+    });
+    file << "manager";
 }

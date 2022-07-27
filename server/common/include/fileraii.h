@@ -7,26 +7,27 @@
 
 
 #include <fstream>
-#include "dirent.h"
-#include <io.h>
+#include <sys/stat.h>
+#include "unistd.h"
 
-class FileRaii
+class CFileRaii
 {
 public:
-    FileRaii(const char* pszDir, const char* pszFilePath)
+    CFileRaii() = default;
+    CFileRaii(const char* pszDir, const char* pszFilePath)
     {
-        if (_access(pszDir, 0) == -1)
+        if (access(pszDir, 0) == -1)
         {
-            _mkdir(pszDir);
+            mkdir(pszDir, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
         }
         m_oOutFile.open(pszFilePath,  std::ios::app | std::ios::out);
 
     }
 
-    ~FileRaii() { m_oOutFile.close(); }
+    ~CFileRaii() { m_oOutFile.close(); }
 
-    FileRaii(FileRaii const&) = delete;
-    FileRaii& operator= (FileRaii const &) = delete;
+    CFileRaii(CFileRaii const&) = delete;
+    CFileRaii& operator= (CFileRaii const &) = delete;
 
     void write(const char* pszContent)
     {

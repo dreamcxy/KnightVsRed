@@ -25,13 +25,14 @@ Developed with Unreal Engine 4
 - [关于c++模板声明和定义拆分开的问题](https://www.zhihu.com/question/20630104)
 - [关于epoll监听关闭的问题](https://www.zhihu.com/question/289965746)
 - [网络通讯使用char](https://www.zhihu.com/question/361487567)、[针对string的优化思路](https://codeantenna.com/a/f44gKMl0Ra)
-- [raii 和 scopreguard](https://www.cnblogs.com/chenny7/p/11990105.html)
+- [raii 和 scopreguard](https://www.cnblogs.com/chenny7/p/11990105.html)、 [raii 模板化](https://ld246.com/article/1524705073004)
 
 ### 开发中想死的瞬间
 - bindFunc不做函数名检测，全靠自觉
 - 构造函数只适合做资源加载，其他的别放进去
 - ue4 删除代码太麻烦了， 有些代码文件虽然不用了，但也没删除
 - 右手大拇指受伤了，按不了空格键，改为左手大拇指
+- c++ 很强大， 过于强大
 
 ### 5.13开发记录
 * ue上传github
