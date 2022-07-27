@@ -8,6 +8,7 @@
 
 #include "buffer.h"
 #include <fstream>
+#include "fileraii.h"
 
 const std::string& GetPrefixByLevel(E_LOG_LEVEL eLogLevel)
 {
@@ -57,19 +58,9 @@ void FileHandler<BufferT>::Log(char *pszContent)
         char szFilePath[MAX_LOG_FILE_DIR_PREFIX_SIZE];
         snprintf("%s/%s", sizeof(szFilePath), m_szDir, m_szPrefix);
 
-        std::ofstream oFile;
-        try
-        {
-            oFile.open(szFilePath, std::ios::out);
-            oFile << pszContent << std::endl;
-        }
-        catch (const std::exception &e)
-        {
-            // todocxy 补上错误日志
-            assert(false);
-            return;
-        }
-        oFile.close();
+        CFileRaii cFileRaii(m_szDir, m_szPrefix);
+        cFileRaill.write(pszContent);
+
         m_pstLogBuffer->Clear();
         return;
     }
