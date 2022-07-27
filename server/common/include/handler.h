@@ -59,7 +59,7 @@ void FileHandler<BufferT>::Log(char *pszContent)
         snprintf("%s/%s", sizeof(szFilePath), m_szDir, m_szPrefix);
 
         CFileRaii cFileRaii(m_szDir, m_szPrefix);
-        cFileRaill.write(pszContent);
+        cFileRaii.write(pszContent);
 
         m_pstLogBuffer->Clear();
         return;
