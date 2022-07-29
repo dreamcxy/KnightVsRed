@@ -26,6 +26,7 @@ Developed with Unreal Engine 4
 - [关于epoll监听关闭的问题](https://www.zhihu.com/question/289965746)
 - [网络通讯使用char](https://www.zhihu.com/question/361487567)、[针对string的优化思路](https://codeantenna.com/a/f44gKMl0Ra)
 - [raii 和 scopreguard](https://www.cnblogs.com/chenny7/p/11990105.html)、 [raii 模板化](https://ld246.com/article/1524705073004)
+- [gtest做单元测试](https://simonzgx.github.io/2020/06/07/%E4%BD%BF%E7%94%A8googletest%E5%81%9A%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/) 、 [gtest做单元测试](https://gohalo.me/post/cpp-gtest-unit-test-usage.html)
 
 ### 开发中想死的瞬间
 - bindFunc不做函数名检测，全靠自觉
@@ -173,3 +174,8 @@ Developed with Unreal Engine 4
 ### 7.27 开发记录
 
 - 用来做资源管理的不仅有raii，还有一个scopeguard用法
+
+### 7.29 开发记录
+
+- 引入gtest做单元测试、编译问题真的好麻烦啊
+- 把开发环境从服务器迁移到wsl了， 确实迁移过来之后方便了很多
