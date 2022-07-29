@@ -9,7 +9,7 @@
 
 TEST(raii, fileraii_test)
 {
-    CFileRaii cFileRaii("log", "log/test_log.txt");
+    CFileRaii cFileRaii("log", "log/fileraii_log.txt");
     cFileRaii.write("hello world");
     cFileRaii.write("plog");
 }
@@ -17,7 +17,7 @@ TEST(raii, fileraii_test)
 
 TEST(raii, commonraii_Test)
 {
-    std::ofstream file("log/test_log.txt");
+    std::ofstream file("log/commonraii_log.txt");
     CRAIIManager file_raii([&file]()
        {
            if (file.is_open())  file.close();
