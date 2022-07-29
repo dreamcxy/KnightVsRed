@@ -25,6 +25,13 @@ public:
         }
     }
 
+    SLog()
+    {
+        m_mapLevelToHandler[LOG_LEVEL_WARN] = new Handler();
+        m_mapLevelToHandler[LOG_LEVEL_INFO] = new Handler();
+        m_mapLevelToHandler[LOG_LEVEL_ERROR] = new Handler();
+    }
+
     int32_t Log(E_LOG_LEVEL eLogLevel, char* pszContent);
     int32_t InitLog(char* pszDir, char* pszPrefix);
 

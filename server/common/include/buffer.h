@@ -13,7 +13,12 @@ public:
     CharLogBuffer() {}
     virtual ~CharLogBuffer() {}
 
-    CharLogBuffer(int32_t nSize):m_nSize(nSize) {}
+    CharLogBuffer(int32_t nSize)
+    {
+
+        m_nSize = nSize;
+        InitBuffer();
+    }
 
     void InitBuffer();
 
