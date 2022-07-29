@@ -178,5 +178,18 @@ Developed with Unreal Engine 4
 ### 7.29 开发记录
 
 - 引入gtest做单元测试、编译问题真的好麻烦啊，花了两个小时终于成功了， 将CMakeLists区分开来，按照不同模块进行编译了
+
 - 把开发环境从服务器迁移到wsl了， 确实迁移过来之后方便了很多
+
 - 不行， 之前7.1设计的用法不合适， 改回原来的父类继承的做法
+
+  - 一个原因是 这种写法太过丑陋和复杂
+
+    `
+
+    ```
+    std::unique_ptr<CharLogBuffer> pstBuffer(new CharLogBuffer(1024));
+    std::unique_ptr<FileHandler<CharLogBuffer>> pstHandler(new FileHandler<CharLogBuffer>(LOG_LEVEL_INFO));
+    std::unique_ptr<SLog<FileHandler<CharLogBuffer>>> pstLog(new SLog<FileHandler<CharLogBuffer>>);`
+    ```
+
