@@ -5,11 +5,7 @@
 #include "include/buffer.h"
 #include <string.h>
 
-void CharLogBuffer::InitBuffer()
-{
-    m_pszBuffer = new char[m_nSize];
-    m_nUsed = 0;
-}
+
 
 bool CharLogBuffer::OverFlow(int32_t nLen)
 {

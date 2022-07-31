@@ -21,7 +21,7 @@
 out                        in                     size
 **/
 
-#define min(x,y) ({ auto _x = (x); auto _y = (y); (void) (&_x == &_y); _x < _y ? _x : _y; })
+#define kfifo_min(x,y) ({ auto _x = (x); auto _y = (y); (void) (&_x == &_y); _x < _y ? _x : _y; })
 
 namespace KFIFO
 {
@@ -78,7 +78,7 @@ namespace KFIFO
 
     uint32_t KFifoPut(STKFifo* pstKfifo, char* szData, uint32_t nLen)
     {
-        uint32_t l = min(nLen, pstKfifo->m_nSize - (pstKfifo->m_nInOffset & (pstKfifo->m_nOutOffset - 1)));
+        uint32_t l = kfifo_min(nLen, pstKfifo->m_nSize - (pstKfifo->m_nInOffset & (pstKfifo->m_nOutOffset - 1)));
         memcpy(pstKfifo->m_pszBuffer + (pstKfifo->m_nInOffset & (pstKfifo->m_nSize - 1 )), szData, l);
         memcpy(pstKfifo->m_pszBuffer, szData + l, nLen - l);
         pstKfifo->m_nInOffset += nLen;
@@ -88,8 +88,8 @@ namespace KFIFO
     uint32_t KFifoGet(STKFifo* pstKfifo, char* szBuffer, uint32_t nLen)
     {
         uint32_t l;
-        nLen = min(nLen, pstKfifo->m_nInOffset - pstKfifo->m_nOutOffset);
-        l = min(nLen, pstKfifo->m_nSize - (pstKfifo->m_nOutOffset & (pstKfifo->m_nSize - 1)));
+        nLen = kfifo_min(nLen, pstKfifo->m_nInOffset - pstKfifo->m_nOutOffset);
+        l = kfifo_min(nLen, pstKfifo->m_nSize - (pstKfifo->m_nOutOffset & (pstKfifo->m_nSize - 1)));
         memcpy(szBuffer, pstKfifo->m_pszBuffer + (pstKfifo->m_nOutOffset & (pstKfifo->m_nSize - 1)), l);
         memcpy(szBuffer + l, pstKfifo->m_pszBuffer, nLen - l);
         return nLen;

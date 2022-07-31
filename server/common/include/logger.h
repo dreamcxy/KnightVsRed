@@ -19,9 +19,9 @@ class SLog : public TSingleton<SLog<Handler>>
 public:
     ~SLog()
     {
-        for (auto handler : m_mapLevelToHandler)
+        for (auto& handler : m_mapLevelToHandler)
         {
-            handler->second->Flush();
+            handler.second->Flush();
         }
     }
 

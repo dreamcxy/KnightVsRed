@@ -10,17 +10,21 @@ class CharLogBuffer
 {
     // 默认是直接char*
 public:
-    CharLogBuffer() {}
+    CharLogBuffer() = default;
     virtual ~CharLogBuffer() {}
 
-    CharLogBuffer(int32_t nSize)
+    explicit CharLogBuffer(int32_t nSize)
     {
 
         m_nSize = nSize;
-        InitBuffer();
+        this->InitBuffer();
     }
 
-    void InitBuffer();
+    void InitBuffer()
+    {
+        m_pszBuffer = new char[m_nSize];
+        m_nUsed = 0;
+    }
 
     // 容量是否超上限了
     bool OverFlow(int32_t nLen);

@@ -38,4 +38,4 @@ protected:
 };
 
 #define DECLARE_CLASS_SINGLETON(type) \
-    friend class TSinglton<type>; 
+    friend class TSingleton<type>;

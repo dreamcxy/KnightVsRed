@@ -10,7 +10,7 @@
 #include <fstream>
 #include "fileraii.h"
 
-const std::string& GetPrefixByLevel(E_LOG_LEVEL eLogLevel)
+const char* GetPrefixByLevel(E_LOG_LEVEL eLogLevel)
 {
     switch (eLogLevel)
     {
@@ -34,6 +34,12 @@ public:
     virtual ~FileHandler() {}
 
     FileHandler(E_LOG_LEVEL eLogLevel):m_eLogLevel(eLogLevel){}
+
+    bool operator < (const FileHandler<BufferT> &handler) const
+    {
+        return true;
+    }
+
 
 public:
     void Log(char* pszContent);

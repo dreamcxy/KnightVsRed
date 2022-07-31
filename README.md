@@ -193,3 +193,6 @@ Developed with Unreal Engine 4
     std::unique_ptr<SLog<FileHandler<CharLogBuffer>>> pstLog(new SLog<FileHandler<CharLogBuffer>>);`
     ```
 
+### 7.31 开发记录
+
+- 初步编译通过
