@@ -35,10 +35,11 @@ struct STAddressConfig
 // 日志等级
 enum E_LOG_LEVEL
 {
-    LOG_LEVEL_INFO = 0,
-    LOG_LEVEL_WARN,
-    LOG_LEVEL_ERROR
+    INFO = 0,
+    WARN,
+    ERROR
 };
+
 
 
 

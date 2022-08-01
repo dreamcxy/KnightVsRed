@@ -14,11 +14,11 @@ const char* GetPrefixByLevel(E_LOG_LEVEL eLogLevel)
 {
     switch (eLogLevel)
     {
-        case LOG_LEVEL_INFO:
+        case INFO:
             return "info";
-        case LOG_LEVEL_WARN:
+        case WARN:
             return "warn";
-        case LOG_LEVEL_ERROR:
+        case ERROR:
             return "error";
         default:
             return "common";

@@ -1,4 +1,4 @@
-add_executable(GServerTest main.cpp test_raii.cpp test_log.cpp)
+add_executable(GServerTest main.cpp test_raii.cpp test_log.cpp ../plugin/magic_enum.h)
 
 set(CMAKE_CXX_FLAGS)
 
