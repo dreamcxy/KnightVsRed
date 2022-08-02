@@ -5,19 +5,16 @@
 #include "include/logger.h"
 #include "gtest/gtest.h"
 #include "iostream"
+#include "commondefine.h"
 
 using namespace std;
 
-template<typename E, E v>
-void f()
-{
-    cout << __PRETTY_FUNCTION__  << endl;
-}
+
 
 TEST(log, test_log)
 {
     std::unique_ptr<CharLogBuffer> pstBuffer(new CharLogBuffer(1024));
-    std::unique_ptr<FileHandler<CharLogBuffer>> pstHandler(new FileHandler<CharLogBuffer>(INFO));
+    std::unique_ptr<FileHandler<CharLogBuffer>> pstHandler(new FileHandler<CharLogBuffer>(E_LOG_LEVEL::E_INFO));
     std::unique_ptr<SLog<FileHandler<CharLogBuffer>>> pstLog(new SLog<FileHandler<CharLogBuffer>>());
 
     cout << &pstLog << endl;
@@ -26,8 +23,6 @@ TEST(log, test_log)
 
 TEST(log, test_magic_enum)
 {
-    constexpr E_LOG_LEVEL logLevel = E_LOG_LEVEL::INFO;
+    std::cout << E_LOG_LEVELToString(E_LOG_LEVEL::E_INFO);
 
-    f<E_LOG_LEVEL, logLevel>();
-    
 }

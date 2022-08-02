@@ -27,9 +27,9 @@ public:
 
     SLog()
     {
-        m_mapLevelToHandler[WARN] = new Handler();
-        m_mapLevelToHandler[INFO] = new Handler();
-        m_mapLevelToHandler[ERROR] = new Handler();
+        m_mapLevelToHandler[E_LOG_LEVEL::E_INFO] = new Handler();
+        m_mapLevelToHandler[E_LOG_LEVEL::E_WARN] = new Handler();
+        m_mapLevelToHandler[E_LOG_LEVEL::E_ERROR] = new Handler();
     }
 
     int32_t Log(E_LOG_LEVEL eLogLevel, char* pszContent);
@@ -49,7 +49,7 @@ private:
 template <typename Handler>
 int32_t SLog<Handler>::InitLog(char *pszDir, char *pszPrefix)
 {
-    for (auto e = INFO; e <= ERROR; e = (E_LOG_LEVEL)(e + 1))
+    for (auto e = E_LOG_LEVEL::E_INFO; e <= E_LOG_LEVEL::E_ERROR; e = (E_LOG_LEVEL)(int(e) + 1))
     {
         // 默认初始化不同level的日志的handler
         m_mapLevelToHandler[e] = new FileHandler<CharLogBuffer>(e);

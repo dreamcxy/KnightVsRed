@@ -10,20 +10,20 @@
 #include <fstream>
 #include "fileraii.h"
 
-const char* GetPrefixByLevel(E_LOG_LEVEL eLogLevel)
-{
-    switch (eLogLevel)
-    {
-        case INFO:
-            return "info";
-        case WARN:
-            return "warn";
-        case ERROR:
-            return "error";
-        default:
-            return "common";
-    }
-}
+//const char* GetPrefixByLevel(E_LOG_LEVEL eLogLevel)
+//{
+//    switch (eLogLevel)
+//    {
+//        case INFO:
+//            return "info";
+//        case WARN:
+//            return "warn";
+//        case ERROR:
+//            return "error";
+//        default:
+//            return "common";
+//    }
+//}
 
 template <typename BufferT>
 class FileHandler
@@ -84,7 +84,7 @@ void FileHandler<BufferT>::Init(char *pszDir, char *pszPrefix)
     }
     if (pszPrefix == nullptr)
     {
-        strcpy(m_szPrefix, GetPrefixByLevel(m_eLogLevel));
+        strcpy(m_szPrefix, E_LOG_LEVELToString(m_eLogLevel));
     }
     // 萃取出来
     m_pstLogBuffer->Init();

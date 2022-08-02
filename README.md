@@ -27,7 +27,7 @@ Developed with Unreal Engine 4
 - [网络通讯使用char](https://www.zhihu.com/question/361487567)、[针对string的优化思路](https://codeantenna.com/a/f44gKMl0Ra)
 - [raii 和 scopreguard](https://www.cnblogs.com/chenny7/p/11990105.html)、 [raii 模板化](https://ld246.com/article/1524705073004)
 - [gtest做单元测试](https://simonzgx.github.io/2020/06/07/%E4%BD%BF%E7%94%A8googletest%E5%81%9A%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/) 、 [gtest做单元测试](https://gohalo.me/post/cpp-gtest-unit-test-usage.html)
-- [magic_enum](https://github.com/Neargye/magic_enum)
+- [magic_enum](https://github.com/Neargye/magic_enum)、[实现enum到string的方法](https://belaycpp.com/2021/08/24/best-ways-to-convert-an-enum-to-a-string/)
 
 ### 开发中想死的瞬间
 - bindFunc不做函数名检测，全靠自觉
@@ -202,3 +202,22 @@ Developed with Unreal Engine 4
 
 - 调整枚举值到string的写法， 从switch修改到宏定义，有个叫magic_enum的， 不过它是基于c++17的， 但我要做的没有那么复杂，试着在c++14上面实现类似的
 - 但后续发现，magic_enum里面使用到的`__PRETTY_FUNCTION__`并不是在所有的编译情况下都能返回正确的所有的格式，因此放弃使用这个方案。
+- 最终因为不想引入boost，还是选择了下面这个方案（不同的方案比较可以见参考文档的 实现enum到string的方法 这个一条）
+- ```c++
+  #include <iostream>
+   
+  #define ENUM_MACRO(name, v1, v2, v3, v4, v5, v6, v7, v8, v9, v10)\
+      enum class name { v1, v2, v3, v4, v5, v6, v7, v8, v9, v10 };\
+      const char *name##Strings[] = { #v1, #v2, #v3, #v4, #v5, #v6, #v7, #v8, #v9, #v10};\
+      template<typename T>\
+      constexpr const char *name##ToString(T value) { return name##Strings[static_cast<int>(value)]; }
+   
+  ENUM_MACRO(Esper, Unu, Du, Tri, Kvar, Kvin, Ses, Sep, Ok, Naux, Dek);
+   
+  int main()
+  {
+      std::cout << EsperToString(Esper::Kvin) << std::endl;
+  }
+  ```
+
+- enum 和 enum class还是有些区别的， 这个我之前竟然不知道。

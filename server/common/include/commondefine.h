@@ -8,6 +8,7 @@
 
 #include <cstdint>
 #include <string>
+#include "magic_enum.h"
 
 // 网络连接对应的ip:port
 struct STAddressConfig
@@ -33,14 +34,14 @@ struct STAddressConfig
 
 
 // 日志等级
-enum E_LOG_LEVEL
-{
-    INFO = 0,
-    WARN,
-    ERROR
-};
+//enum E_LOG_LEVEL
+//{
+//    INFO = 0,
+//    WARN,
+//    ERROR
+//};
 
-
+ENUM_MACRO(E_LOG_LEVEL, E_INFO, E_WARN, E_ERROR);
 
 
 #endif //SERVER_COMMONDEFINE_H
