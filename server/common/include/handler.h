@@ -10,6 +10,7 @@
 #include <fstream>
 #include "fileraii.h"
 
+
 //const char* GetPrefixByLevel(E_LOG_LEVEL eLogLevel)
 //{
 //    switch (eLogLevel)
@@ -35,14 +36,8 @@ public:
 
     FileHandler(E_LOG_LEVEL eLogLevel):m_eLogLevel(eLogLevel){}
 
-    bool operator < (const FileHandler<BufferT> &handler) const
-    {
-        return true;
-    }
-
-
 public:
-    void Log(char* pszContent);
+    void Log(const char* pszContent);
     void Init(char* pszDir, char* pszPrefix);
     // 将内容写入
     void Flush();
@@ -56,13 +51,13 @@ private:
 };
 
 template <typename BufferT>
-void FileHandler<BufferT>::Log(char *pszContent)
+void FileHandler<BufferT>::Log(const char *pszContent)
 {
-    if (m_pstLogBuffer->OverFlow())
+    if (m_pstLogBuffer->OverFlow(strlen(pszContent)))
     {
         // 容量超过了预设上限
         char szFilePath[MAX_LOG_FILE_DIR_PREFIX_SIZE];
-        snprintf("%s/%s", sizeof(szFilePath), m_szDir, m_szPrefix);
+        snprintf("%s//%s", sizeof(szFilePath), m_szDir, m_szPrefix);
 
         CFileRaii cFileRaii(m_szDir, m_szPrefix);
         cFileRaii.write(pszContent);
@@ -87,7 +82,7 @@ void FileHandler<BufferT>::Init(char *pszDir, char *pszPrefix)
         strcpy(m_szPrefix, E_LOG_LEVELToString(m_eLogLevel));
     }
     // 萃取出来
-    m_pstLogBuffer->Init();
+    m_pstLogBuffer->InitBuffer();
 }
 
 template <typename BufferT>
@@ -123,5 +118,7 @@ class RotatingFileTimeHandler : FileHandler<BufferT>
     // 根据文件时间进行轮转
 };
 
+
+template class FileHandler<CharLogBuffer>;
 
 #endif //SERVER_HANDLER_H

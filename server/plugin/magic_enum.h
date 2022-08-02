@@ -14,7 +14,7 @@ namespace magic_enum
 
     #define ENUM_MACRO(name, v1, v2, v3) \
         enum class name {v1, v2, v3};        \
-        const char* psz##name[] = {#v1, #v2, #v3}; \
+        static const char* psz##name[] = {#v1, #v2, #v3}; \
         template<typename T>             \
         constexpr const char* name##ToString(T value) { return psz##name[static_cast<int>(value)]; }
 

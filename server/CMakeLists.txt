@@ -28,8 +28,12 @@ include_directories("common" "common/include")
 # 库文件
 #list(APPEND COMMON_LIB common)
 list(APPEND COMMON_LIB -lgtest  -lpthread)
+list(APPEND COMMON_LIB common)
 
+#编译通用的模块
+add_subdirectory(common)
 
+# 编译各个module
 foreach(EXE ${EXE_MODULES})
     add_subdirectory(${EXE})
 endforeach()

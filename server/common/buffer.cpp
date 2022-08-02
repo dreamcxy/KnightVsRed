@@ -17,7 +17,7 @@ void CharLogBuffer::Clear()
     memset(m_pszBuffer, 0, m_nSize);
 }
 
-void CharLogBuffer::Put(char *pszContent)
+void CharLogBuffer::Put(const char *pszContent)
 {
 
 }

@@ -1,0 +1,8 @@
+# Default ignored files
+/workspace.xml
+dbnavigator.xml
+deployment.xml
+misc.xml
+modules.xml
+server.iml
+vcs.xml

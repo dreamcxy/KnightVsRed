@@ -4,6 +4,7 @@ set(CMAKE_CXX_FLAGS)
 
 target_link_libraries(GServerTest ${GTEST_LIBRARY})
 target_link_libraries(GServerTest pthread)
+target_link_libraries(GServerTest ${COMMON_LIB})
 add_test(Test GServerTest)
 
 ENABLE_TESTING()

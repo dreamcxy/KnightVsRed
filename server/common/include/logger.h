@@ -27,13 +27,14 @@ public:
 
     SLog()
     {
-        m_mapLevelToHandler[E_LOG_LEVEL::E_INFO] = new Handler();
-        m_mapLevelToHandler[E_LOG_LEVEL::E_WARN] = new Handler();
-        m_mapLevelToHandler[E_LOG_LEVEL::E_ERROR] = new Handler();
+//        m_mapLevelToHandler[E_LOG_LEVEL::E_INFO] = new Handler();
+//        m_mapLevelToHandler[E_LOG_LEVEL::E_WARN] = new Handler();
+//        m_mapLevelToHandler[E_LOG_LEVEL::E_ERROR] = new Handler();
+        InitLog();
     }
 
-    int32_t Log(E_LOG_LEVEL eLogLevel, char* pszContent);
-    int32_t InitLog(char* pszDir, char* pszPrefix);
+    int32_t Log(E_LOG_LEVEL eLogLevel, const char* pszContent);
+    int32_t InitLog(char* pszDir = nullptr, char* pszPrefix = nullptr);
 
     // 根据时间将缓冲区的内容输出
     void Update();
@@ -60,7 +61,7 @@ int32_t SLog<Handler>::InitLog(char *pszDir, char *pszPrefix)
 }
 
 template <typename Handler>
-int32_t SLog<Handler>::Log(E_LOG_LEVEL eLogLevel, char *pszContent)
+int32_t SLog<Handler>::Log(E_LOG_LEVEL eLogLevel, const char *pszContent)
 {
     auto pstHandler = GetHandlerByLevel(eLogLevel);
     if (!pstHandler)
@@ -75,9 +76,10 @@ void SLog<Handler>::Update()
 {
     for (auto handler : m_mapLevelToHandler)
     {
-        handler->Update();
+        handler.second->Update();
     }
 }
 
+template class SLog<FileHandler<CharLogBuffer>>;
 
 #endif //SERVER_LOGGER_H

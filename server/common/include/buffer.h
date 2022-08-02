@@ -1,11 +1,13 @@
 //
 // Created by chenxiaoyu5 on 2022/7/1.
 //
+#pragma once
 
 #ifndef SERVER_BUFFER_H
 #define SERVER_BUFFER_H
 
 #include "commondefine.h"
+
 class CharLogBuffer
 {
     // 默认是直接char*
@@ -31,7 +33,7 @@ public:
     // 清空buffer
     void Clear();
     // 添加内容
-    void Put(char* pszContent);
+    void Put(const char* pszContent);
 
     bool empty() {return m_nUsed == 0; };
 private:
