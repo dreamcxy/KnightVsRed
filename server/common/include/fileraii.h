@@ -9,20 +9,24 @@
 #include <fstream>
 #include <sys/stat.h>
 #include "unistd.h"
+#include "commondefine.h"
 
 class CFileRaii
 {
 public:
     CFileRaii() = default;
-    CFileRaii(const char* pszDir, const char* pszFilePath)
+    CFileRaii(const char* pszDir, const char* pszFileName)
     {
         if (access(pszDir, 0) == -1)
         {
             mkdir(pszDir, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
         }
-        m_oOutFile.open(pszFilePath,  std::ios::app | std::ios::out);
-
+        char szFilePath[MAX_LOG_FILE_DIR_PREFIX_SIZE * 2];
+        sprintf(szFilePath, "%s/%s", pszDir, pszFileName);
+        m_oOutFile.open(szFilePath,  std::ios::app | std::ios::out);
     }
+
+
 
     ~CFileRaii() { m_oOutFile.close(); }
 

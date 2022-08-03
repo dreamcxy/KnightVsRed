@@ -1,124 +1,58 @@
 //
-// Created by chenxiaoyu5 on 2022/7/1.
+// Created by chenxiaoyu5 on 2022/8/2.
 //
 
-#ifndef SERVER_HANDLER_H
-#define SERVER_HANDLER_H
-
+#ifndef KNIGHTVSREDSERVER_HANDLER_H
+#define KNIGHTVSREDSERVER_HANDLER_H
 
 #include "buffer.h"
-#include <fstream>
-#include "fileraii.h"
+#include "commondefine.h"
+#include <memory>
 
-
-//const char* GetPrefixByLevel(E_LOG_LEVEL eLogLevel)
-//{
-//    switch (eLogLevel)
-//    {
-//        case INFO:
-//            return "info";
-//        case WARN:
-//            return "warn";
-//        case ERROR:
-//            return "error";
-//        default:
-//            return "common";
-//    }
-//}
-
-template <typename BufferT>
-class FileHandler
-// 直接写入文件，定时以及buffer长度大到一定长度
+class IHandlerBase
 {
 public:
-    FileHandler() {}
+    IHandlerBase() {}
+    virtual ~IHandlerBase() {}
+
+    virtual void Log(const char* pszContent) = 0;
+//    virtual void SetBuffer(IBufferBase* pstBuffer) = 0;
+};
+
+// 这个是直接写入文件
+class FileHandler : public IHandlerBase
+{
+public:
+    FileHandler() = default;
     virtual ~FileHandler() {}
 
-    FileHandler(E_LOG_LEVEL eLogLevel):m_eLogLevel(eLogLevel){}
+    FileHandler(const char *pszDir, const char* pszFileName);
 
-public:
-    void Log(const char* pszContent);
-    void Init(char* pszDir, char* pszPrefix);
-    // 将内容写入
-    void Flush();
-    void Update();
+    virtual void Log(const char* pszContent) override;
+    virtual void SetBuffer(IBufferBase* pstBuffer);
 private:
-    E_LOG_LEVEL     m_eLogLevel;
-    BufferT*        m_pstLogBuffer;
-
-    char            m_szDir[MAX_LOG_FILE_DIR_PREFIX_SIZE];           // 文件夹根目录
-    char            m_szPrefix[MAX_LOG_FILE_DIR_PREFIX_SIZE];        // 文件的前缀
+    char m_szDir[MAX_LOG_FILE_DIR_PREFIX_SIZE];
+    char m_szFileName[MAX_LOG_FILE_DIR_PREFIX_SIZE];
+    std::unique_ptr<IBufferBase> m_pstBuffer;
 };
 
-template <typename BufferT>
-void FileHandler<BufferT>::Log(const char *pszContent)
+// 这个是根据文件大小进行轮转
+class RotatingFileHandler : public IHandlerBase
 {
-    if (m_pstLogBuffer->OverFlow(strlen(pszContent)))
-    {
-        // 容量超过了预设上限
-        char szFilePath[MAX_LOG_FILE_DIR_PREFIX_SIZE];
-        snprintf("%s//%s", sizeof(szFilePath), m_szDir, m_szPrefix);
-
-        CFileRaii cFileRaii(m_szDir, m_szPrefix);
-        cFileRaii.write(pszContent);
-
-        m_pstLogBuffer->Clear();
-        return;
-    }
-    // todocxy 这边也直接写入文件
-    m_pstLogBuffer->Put(pszContent);
-}
-
-template <typename BufferT>
-void FileHandler<BufferT>::Init(char *pszDir, char *pszPrefix)
-{
-    // 默认输出到本目录下面, 以level作为前缀
-    if (pszDir == nullptr)
-    {
-        strcpy(m_szDir, DEFAULT_LOG_DIR);
-    }
-    if (pszPrefix == nullptr)
-    {
-        strcpy(m_szPrefix, E_LOG_LEVELToString(m_eLogLevel));
-    }
-    // 萃取出来
-    m_pstLogBuffer->InitBuffer();
-}
-
-template <typename BufferT>
-void FileHandler<BufferT>::Update()
-{
-    // todocxy 定时写入
-    if (!m_pstLogBuffer->empty())
-    {
-        Log("");
-    }
-}
-
-template <typename BufferT>
-void FileHandler<BufferT>::Flush()
-{
-
-}
-
-
-template <typename BufferT>
-class RotatingFileHandler : FileHandler<BufferT>
-{
-    // 根据文件大小进行轮转
 public:
+    RotatingFileHandler() = default;
+    virtual ~RotatingFileHandler() {}
 
+    RotatingFileHandler(const char* pszDir, const char* pszFileName, int32_t nFileSize, int32_t nFileNum);
+
+    virtual void Log(const char* pszContent) override;
 private:
-
+    int32_t m_nFileSize;
+    int32_t m_nFileNum;
+    char    m_szDir[MAX_LOG_FILE_DIR_PREFIX_SIZE];
+    char    m_szFileName[MAX_LOG_FILE_DIR_PREFIX_SIZE];
+    int32_t m_nFileIndex; // 目前用的哪个文件
 };
 
-template <typename BufferT>
-class RotatingFileTimeHandler : FileHandler<BufferT>
-{
-    // 根据文件时间进行轮转
-};
 
-
-template class FileHandler<CharLogBuffer>;
-
-#endif //SERVER_HANDLER_H
+#endif //KNIGHTVSREDSERVER_HANDLER_H

@@ -1,53 +1,35 @@
 //
-// Created by chenxiaoyu5 on 2022/7/1.
+// Created by chenxiaoyu5 on 2022/8/2.
 //
-#pragma once
 
-#ifndef SERVER_BUFFER_H
-#define SERVER_BUFFER_H
+#ifndef KNIGHTVSREDSERVER_BUFFER_H
+#define KNIGHTVSREDSERVER_BUFFER_H
 
-#include "commondefine.h"
+#include <cstdint>
 
-class CharLogBuffer
+class IBufferBase
 {
-    // 默认是直接char*
 public:
-    CharLogBuffer() = default;
-    virtual ~CharLogBuffer() {}
+    IBufferBase() {}
+    virtual ~IBufferBase() {}
 
-    explicit CharLogBuffer(int32_t nSize)
-    {
+    virtual void Clear() = 0;
+    virtual bool OverFlow(int32_t nLength) = 0;
+    virtual void Put(const char* pszContent) = 0;
+    virtual bool Empty() = 0;
+    virtual char* GetContent() = 0;
+};
 
-        m_nSize = nSize;
-        this->InitBuffer();
-    }
+class CharBuffer : public IBufferBase
+{
+public:
+    CharBuffer() {}
+    virtual ~CharBuffer() {}
 
-    void InitBuffer()
-    {
-        m_pszBuffer = new char[m_nSize];
-        m_nUsed = 0;
-    }
-
-    // 容量是否超上限了
-    bool OverFlow(int32_t nLen);
-    // 清空buffer
-    void Clear();
-    // 添加内容
-    void Put(const char* pszContent);
-
-    bool empty() {return m_nUsed == 0; };
-private:
-    char* m_pszBuffer;
-    int32_t m_nSize = MAX_LOG_BUFFER_SIZE;    // 上限
-    int32_t m_nUsed;                          // 已经使用了的长度
 };
 
 
-class FifoLogBuffer
-{
-    // 环形队列
-public:
-};
+
+#endif //KNIGHTVSREDSERVER_BUFFER_H
 
 
-#endif //SERVER_BUFFER_H

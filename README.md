@@ -230,6 +230,8 @@ Developed with Unreal Engine 4
 
 - 7.1 ， 在原来的基础上能调通了，但后续还是会放弃这个设计，不合理
 - 出现很多undefined问题，根本在于common模块没有编译，所以要添加编译
-- multidefine的时候，甚至加了个static就好了， c++的编译也太tm奇怪了
+- multidefine的时候，甚至加了个static就好了， c++的编译也太tm奇怪了，clion也太好用了
 
-​	
+### 	8.3 开发记录
+
+- 指针统一用智能指针进行管理

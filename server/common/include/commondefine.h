@@ -26,11 +26,17 @@ struct STAddressConfig
 
 // 日志buffer最大
 #define MAX_LOG_BUFFER_SIZE (1024 * 1024)
+
 // 日志目录和文件名最大长度
 #define MAX_LOG_FILE_DIR_PREFIX_SIZE (10)
+// 日志包含路径的文件名最大长度
+#define MAX_LOG_FILE_PATH_SIZE (30)
+
 
 // 默认日志目录名字
 #define DEFAULT_LOG_DIR "log"
+// 默认日志文件名
+#define DEFAULT_LOG_FILE_NAME "log.txt"
 
 
 // 日志等级
