@@ -1,6 +1,6 @@
 
 get_filename_component(MODULE_NAME ${CMAKE_CURRENT_SOURCE_DIR} NAME)
 file(GLOB_RECURSE MODULE_SRC ../mess_code/buffer.cpp)
-add_library(${MODULE_NAME} STATIC ${MODULE_SRC} include/logger.h include/handler.h include/buffer.h handler.cpp logger.cpp)
+add_library(${MODULE_NAME} STATIC ${MODULE_SRC} include/logger.h include/handler.h include/buffer.h handler.cpp logger.cpp buffer.cpp)
 
 

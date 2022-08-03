@@ -22,6 +22,8 @@ list(APPEND EXE_MODULES test)
 # 设定输出位置
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY  ${PROJECT_SOURCE_DIR}/bin)
 
+set(CMAKE_CXX_FLAGS  -g)
+
 # 包含通用头文件
 include_directories("common" "common/include")
 

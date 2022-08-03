@@ -1,5 +1,5 @@
 //
-// Created by chenxiaoyu5 on 2022/7/29.
+// Created by cxy on 2022/7/29.
 //
 
 
@@ -13,6 +13,7 @@ using namespace std;
 
 TEST(log, test_log_filehanlder)
 {
+    return;
     SLog* pstLog = new SLog();
     FileHandler* pstHandler = new FileHandler("log", E_LOG_LEVELToString(E_LOG_LEVEL::E_INFO));
     pstLog->RegisterHandler(E_LOG_LEVEL::E_INFO, pstHandler);
@@ -34,6 +35,7 @@ TEST(log, test_log_rotatingfilehandler)
 
 TEST(log, test_file_size)
 {
+    return;
     char pszFilePath[MAX_LOG_FILE_DIR_PREFIX_SIZE * 2];
     sprintf(pszFilePath, "%s/%s_0.txt", "log", E_LOG_LEVELToString(E_LOG_LEVEL::E_INFO));
     struct stat sb{};
@@ -42,5 +44,16 @@ TEST(log, test_file_size)
         perror("stat get file size error");
     }
     cout << sb.st_size << endl;
+}
 
+TEST(log, test_char_array)
+{
+    return;
+    CharBuffer charBuffer = CharBuffer();
+    cout << charBuffer.Empty() << endl;
+    charBuffer.Put("hello world");
+    cout << charBuffer.GetBufferSize() << endl;
+    cout << charBuffer.GetContent() << endl;
+    charBuffer.Clear();
+    cout << charBuffer.GetBufferSize() << endl;
 }

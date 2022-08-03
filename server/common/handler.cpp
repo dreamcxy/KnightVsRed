@@ -1,5 +1,5 @@
 //
-// Created by chenxiaoyu5 on 2022/8/2.
+// Created by cxy on 2022/8/2.
 //
 
 
@@ -33,6 +33,11 @@ void FileHandler::Log(const char *pszContent)
     }
 }
 
+void FileHandler::LogDirect(const char *pszContent)
+{
+    Log(pszContent);
+}
+
 void FileHandler::SetBuffer(IBufferBase *pstBuffer)
 {
     if (!m_pstBuffer->Empty())
@@ -51,11 +56,28 @@ RotatingFileHandler::RotatingFileHandler(const char *pszDir, const char *pszFile
     strncpy(m_szFileName, pszFileName, strlen(pszFileName) + 1);
     m_nFileNum = nFileNum;
     m_nFileSize = nFileSize;
+    m_pstBuffer.reset(std::move(new CharBuffer()));
+}
+
+RotatingFileHandler::~RotatingFileHandler()
+{
+    LogDirect(m_pstBuffer->GetContent());
 }
 
 void RotatingFileHandler::Log(const char *pszContent)
 {
+    if (m_pstBuffer->OverFlow(strlen(pszContent)))
+    {
+        // 如果加入就会超过buffer的大小
+        LogDirect(m_pstBuffer->GetContent());
+        m_pstBuffer->Clear();
+        m_pstBuffer->Put(pszContent);
+    }
+    m_pstBuffer->Put(pszContent);
+}
 
+void RotatingFileHandler::LogDirect(const char *pszContent)
+{
     char pszFilePath[MAX_LOG_FILE_PATH_SIZE];
     sprintf(pszFilePath, "%s/%s_%d.txt", m_szDir, m_szFileName, m_nFileIndex);
 
@@ -75,12 +97,15 @@ void RotatingFileHandler::Log(const char *pszContent)
         else
         {
             m_nFileIndex += 1;
+
         }
     }
+    // 清空文件
+    sprintf(pszFilePath, "%s/%s_%d.txt", m_szDir, m_szFileName, m_nFileIndex);
+    std::ofstream writer(pszFilePath, std::ios_base::out);
 
     char pszFileName[MAX_LOG_FILE_PATH_SIZE];
     sprintf(pszFileName, "%s_%d.txt", m_szFileName, m_nFileIndex);
-
 
     CFileRaii cFileRaii(m_szDir, pszFileName);
     cFileRaii.write(pszContent);

@@ -235,3 +235,4 @@ Developed with Unreal Engine 4
 ### 	8.3 开发记录
 
 - 指针统一用智能指针进行管理
+- 添加buffer部分的逻辑

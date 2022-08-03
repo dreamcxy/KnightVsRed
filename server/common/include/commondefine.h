@@ -1,5 +1,5 @@
 //
-// Created by chenxiaoyu5 on 2022/6/23.
+// Created by cxy on 2022/6/23.
 //
 
 #ifndef SERVER_COMMONDEFINE_H
@@ -25,7 +25,7 @@ struct STAddressConfig
 
 
 // 日志buffer最大
-#define MAX_LOG_BUFFER_SIZE (1024 * 1024)
+#define MAX_LOG_BUFFER_SIZE (1)
 
 // 日志目录和文件名最大长度
 #define MAX_LOG_FILE_DIR_PREFIX_SIZE (10)
