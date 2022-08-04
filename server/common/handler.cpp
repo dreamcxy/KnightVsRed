@@ -57,6 +57,7 @@ RotatingFileHandler::RotatingFileHandler(const char *pszDir, const char *pszFile
     m_nFileNum = nFileNum;
     m_nFileSize = nFileSize;
     m_pstBuffer.reset(std::move(new CharBuffer()));
+    m_nFileIndex = 0;
 }
 
 RotatingFileHandler::~RotatingFileHandler()
@@ -70,16 +71,21 @@ void RotatingFileHandler::Log(const char *pszContent)
     {
         // 如果加入就会超过buffer的大小
         LogDirect(m_pstBuffer->GetContent());
+        LogDirect(pszContent);
         m_pstBuffer->Clear();
-        m_pstBuffer->Put(pszContent);
+        return;
     }
     m_pstBuffer->Put(pszContent);
 }
 
 void RotatingFileHandler::LogDirect(const char *pszContent)
 {
+    if (strlen(pszContent) == 0)
+    {
+        return;
+    }
     char pszFilePath[MAX_LOG_FILE_PATH_SIZE];
-    sprintf(pszFilePath, "%s/%s_%d.txt", m_szDir, m_szFileName, m_nFileIndex);
+    sprintf(pszFilePath, "%s/%s_%d.txt", m_szDir, m_szFileName, 0);
 
     struct stat sb{};
     if (stat(pszFilePath, &sb))
@@ -89,6 +95,7 @@ void RotatingFileHandler::LogDirect(const char *pszContent)
     if (sb.st_size + strlen(pszContent) >= m_nFileSize)
     {
         // 当前文件大小超限
+        // 将0备份到1
         if (m_nFileIndex + 1 >= m_nFileNum)
         {
             // 从0开始
@@ -97,17 +104,45 @@ void RotatingFileHandler::LogDirect(const char *pszContent)
         else
         {
             m_nFileIndex += 1;
-
         }
-    }
-    // 清空文件
-    sprintf(pszFilePath, "%s/%s_%d.txt", m_szDir, m_szFileName, m_nFileIndex);
-    std::ofstream writer(pszFilePath, std::ios_base::out);
 
+        // 清空文件
+        sprintf(pszFilePath, "%s/%s_%d.txt", m_szDir, m_szFileName, m_nFileIndex);
+        std::ofstream writer(pszFilePath, std::ios_base::out);
+    }
     char pszFileName[MAX_LOG_FILE_PATH_SIZE];
     sprintf(pszFileName, "%s_%d.txt", m_szFileName, m_nFileIndex);
 
     CFileRaii cFileRaii(m_szDir, pszFileName);
     cFileRaii.write(pszContent);
 
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void RotatingFileTimeHandler::Log(const char *pszContent)
+{
+    if (m_pstBuffer->OverFlow(strlen(pszContent)))
+    {
+        LogDirect(pszContent);
+    }
+
+}
+
+void RotatingFileTimeHandler::LogDirect(const char *pszContent)
+{
+    // 文件根据时间轮转，写入的文件都是0开头的， 根据文件大小，将0备份到1
+    // 重新起服的时候，根据
+    int32_t nIndex = 0; // 这是始终的index
+    char pszFilePath[MAX_LOG_FILE_PATH_SIZE];
+    sprintf(pszFilePath, "%s/%s_%d.txt", m_szDir, m_szFileName, 0);
+    struct stat sb;
+    if (stat(pszFilePath, &sb) == -1)
+    {
+        // todocxy，其实不用做什么
+    }
+    if (sb.st_size + strlen(pszContent) >= m_nFileSize)
+    {
+        // 迁移文件
+        rename()
+    }
 }

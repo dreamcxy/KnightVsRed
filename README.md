@@ -32,6 +32,7 @@ Developed with Unreal Engine 4
 - [raii 和 scopreguard](https://www.cnblogs.com/chenny7/p/11990105.html)、 [raii 模板化](https://ld246.com/article/1524705073004)
 - [gtest做单元测试](https://simonzgx.github.io/2020/06/07/%E4%BD%BF%E7%94%A8googletest%E5%81%9A%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/) 、 [gtest做单元测试](https://gohalo.me/post/cpp-gtest-unit-test-usage.html)
 - [magic_enum](https://github.com/Neargye/magic_enum)、[实现enum到string的方法](https://belaycpp.com/2021/08/24/best-ways-to-convert-an-enum-to-a-string/)、[宏里面遍历不定参数](https://www.itranslater.com/qa/details/2326168829484860416)
+- [c++ 高效拷贝文件的方法](https://stackoverflow.com/questions/10195343/copy-a-file-in-a-sane-safe-and-efficient-way)
 
 ### 开发中想死的瞬间
 - bindFunc不做函数名检测，全靠自觉

@@ -39,12 +39,13 @@ private:
     std::unique_ptr<IBufferBase> m_pstBuffer;
 };
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // 这个是根据文件大小进行轮转
 class RotatingFileHandler : public IHandlerBase
 {
 public:
     RotatingFileHandler() = default;
-    ~RotatingFileHandler();
+    virtual ~RotatingFileHandler();
 
     RotatingFileHandler(const char* pszDir, const char* pszFileName, int32_t nFileSize, int32_t nFileNum);
 
@@ -61,5 +62,22 @@ private:
     std::unique_ptr<IBufferBase> m_pstBuffer;
 };
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class RotatingFileTimeHandler : public IHandlerBase
+{
+public:
+    RotatingFileTimeHandler() = default;
+    virtual ~RotatingFileTimeHandler();
 
+    virtual void Log(const char* pszContent) override;
+    virtual void LogDirect(const char* pszContent) override;
+
+private:
+    std::unique_ptr<IBufferBase> m_pstBuffer;
+    int32_t m_nFileSize;
+    int32_t m_nFileNum;
+    char    m_szDir[MAX_LOG_FILE_DIR_PREFIX_SIZE];
+    char    m_szFileName[MAX_LOG_FILE_DIR_PREFIX_SIZE];
+};
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #endif //KNIGHTVSREDSERVER_HANDLER_H
