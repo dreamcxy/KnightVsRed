@@ -5,6 +5,7 @@
 
 #include "handler.h"
 #include "fileraii.h"
+#include "fileutils.h"
 #include <string.h>
 #include <sys/stat.h>
 
@@ -88,13 +89,7 @@ void RotatingFileHandler::LogDirect(const char *pszContent)
     }
     char pszFilePath[MAX_LOG_FILE_PATH_SIZE];
     sprintf(pszFilePath, "%s/%s_%d.txt", m_szDir, m_szFileName, 0);
-
-    struct stat sb{};
-    if (stat(pszFilePath, &sb))
-    {
-        // 不做处理，还没有这个文件
-    }
-    if (sb.st_size + strlen(pszContent) >= m_nFileSize)
+    if (FileUtils::GetFileSize(pszFilePath) + strlen(pszContent) >= m_nFileSize)
     {
         // 当前文件大小超限
         // 将0备份到1
@@ -152,17 +147,13 @@ void RotatingFileTimeHandler::LogDirect(const char *pszContent)
     int32_t nIndex = 0; // 这是始终的index
     char pszFilePath[MAX_LOG_FILE_PATH_SIZE];
     sprintf(pszFilePath, "%s/%s_%d.txt", m_szDir, m_szFileName, 0);
-    struct stat sb;
-    if (stat(pszFilePath, &sb) == -1)
-    {
-    }
-    if (sb.st_size + strlen(pszContent) >= m_nFileSize)
+    if (FileUtils::GetFileSize(pszFilePath) + strlen(pszContent) >= m_nFileSize)
     {
         // 迁移文件
         char pszNewFileName[MAX_LOG_FILE_DIR_PREFIX_SIZE];
         sprintf(pszNewFileName, "%s_%d.txt", m_szFileName, m_nCurFileIndex);
         char pszOldFileName[MAX_LOG_FILE_DIR_PREFIX_SIZE];
         sprintf(pszOldFileName, "%s_%d.txt", m_szFileName, 0);
-        rename(pszOldFileName, pszNewFileName);
+        FileUtils::RenameFileSameDir(m_szDir, pszOldFileName, pszNewFileName);
     }
 }

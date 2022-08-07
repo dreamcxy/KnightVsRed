@@ -3,9 +3,6 @@ project(KnightVsRedServer)
 
 set(CMAKE_CXX_STANDARD 14)
 
-include_directories(plugin)
-include_directories(test)
-
 #gtest
 find_package(GTest REQUIRED)
 if (GTest_FOUND)
@@ -26,14 +23,19 @@ set(CMAKE_CXX_FLAGS  -g)
 
 # 包含通用头文件
 include_directories("common" "common/include")
+include_directories(plugin)
+include_directories(test)
 
 # 库文件
 #list(APPEND COMMON_LIB common)
 list(APPEND COMMON_LIB -lgtest  -lpthread)
 list(APPEND COMMON_LIB common)
+list(APPEND COMMON_LIB plugin)
+
 
 #编译通用的模块
 add_subdirectory(common)
+add_subdirectory(plugin)
 
 # 编译各个module
 foreach(EXE ${EXE_MODULES})
