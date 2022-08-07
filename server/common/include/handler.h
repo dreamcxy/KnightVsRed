@@ -69,6 +69,8 @@ public:
     RotatingFileTimeHandler() = default;
     virtual ~RotatingFileTimeHandler();
 
+    RotatingFileTimeHandler(const char* pszDir, const char* pszFileName, int32_t nFileSize, int32_t nFileNum);
+
     virtual void Log(const char* pszContent) override;
     virtual void LogDirect(const char* pszContent) override;
 
@@ -78,6 +80,8 @@ private:
     int32_t m_nFileNum;
     char    m_szDir[MAX_LOG_FILE_DIR_PREFIX_SIZE];
     char    m_szFileName[MAX_LOG_FILE_DIR_PREFIX_SIZE];
+
+    int32_t m_nCurFileIndex;
 };
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #endif //KNIGHTVSREDSERVER_HANDLER_H

@@ -8,6 +8,8 @@
 #include <string.h>
 #include <sys/stat.h>
 
+#include <memory>
+
 FileHandler::FileHandler(const char *pszDir, const char *pszFileName)
 {
     strncpy(m_szDir, pszDir, strlen(pszDir) + 1);
@@ -56,7 +58,7 @@ RotatingFileHandler::RotatingFileHandler(const char *pszDir, const char *pszFile
     strncpy(m_szFileName, pszFileName, strlen(pszFileName) + 1);
     m_nFileNum = nFileNum;
     m_nFileSize = nFileSize;
-    m_pstBuffer.reset(std::move(new CharBuffer()));
+    m_pstBuffer = std::make_unique<CharBuffer>();
     m_nFileIndex = 0;
 }
 
@@ -119,13 +121,28 @@ void RotatingFileHandler::LogDirect(const char *pszContent)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+RotatingFileTimeHandler::RotatingFileTimeHandler(const char *pszDir, const char *pszFileName, int32_t nFileSize,
+                                                 int32_t nFileNum)
+{
+    strncpy(m_szDir, pszDir, strlen(pszDir) + 1);
+    strncpy(m_szFileName, pszFileName, strlen(pszFileName) + 1);
+    m_nFileNum = nFileNum;
+    m_nFileSize = nFileSize;
+    m_pstBuffer = std::make_unique<CharBuffer>();
+    // 读取目录下面的文件，看到哪个目录了
+}
+
+
 void RotatingFileTimeHandler::Log(const char *pszContent)
 {
-    if (m_pstBuffer->OverFlow(strlen(pszContent)))
+    if (m_pstBuffer->OverFlow((int32_t)strlen(pszContent)))
     {
+        LogDirect(m_pstBuffer->GetContent());
         LogDirect(pszContent);
+        m_pstBuffer->Clear();
+        return;
     }
-
+    m_pstBuffer->Put(pszContent);
 }
 
 void RotatingFileTimeHandler::LogDirect(const char *pszContent)
@@ -138,11 +155,14 @@ void RotatingFileTimeHandler::LogDirect(const char *pszContent)
     struct stat sb;
     if (stat(pszFilePath, &sb) == -1)
     {
-        // todocxy，其实不用做什么
     }
     if (sb.st_size + strlen(pszContent) >= m_nFileSize)
     {
         // 迁移文件
-        rename()
+        char pszNewFileName[MAX_LOG_FILE_DIR_PREFIX_SIZE];
+        sprintf(pszNewFileName, "%s_%d.txt", m_szFileName, m_nCurFileIndex);
+        char pszOldFileName[MAX_LOG_FILE_DIR_PREFIX_SIZE];
+        sprintf(pszOldFileName, "%s_%d.txt", m_szFileName, 0);
+        rename(pszOldFileName, pszNewFileName);
     }
 }
