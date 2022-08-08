@@ -237,3 +237,13 @@ Developed with Unreal Engine 4
 
 - 指针统一用智能指针进行管理
 - 添加buffer部分的逻辑
+
+
+
+### 8.7 开发记录
+
+- 统一之前的file处理函数
+
+### 8.8 开发记录
+
+- 添加一些file处理函数
