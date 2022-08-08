@@ -150,9 +150,9 @@ void RotatingFileTimeHandler::LogDirect(const char *pszContent)
     if (FileUtils::GetFileSize(pszFilePath) + strlen(pszContent) >= m_nFileSize)
     {
         // 迁移文件
-        char pszNewFileName[MAX_LOG_FILE_DIR_PREFIX_SIZE];
+        char pszNewFileName[MAX_LOG_FILE_PATH_SIZE];
         sprintf(pszNewFileName, "%s_%d.txt", m_szFileName, m_nCurFileIndex);
-        char pszOldFileName[MAX_LOG_FILE_DIR_PREFIX_SIZE];
+        char pszOldFileName[MAX_LOG_FILE_PATH_SIZE];
         sprintf(pszOldFileName, "%s_%d.txt", m_szFileName, 0);
         FileUtils::RenameFileSameDir(m_szDir, pszOldFileName, pszNewFileName);
     }

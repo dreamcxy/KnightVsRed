@@ -6,6 +6,7 @@
 #include "logger.h"
 #include "gtest/gtest.h"
 #include "iostream"
+#include "fileutils.h"
 
 using namespace std;
 
@@ -25,6 +26,7 @@ TEST(log, test_log_filehanlder)
 
 TEST(log, test_log_rotatingfilehandler)
 {
+    return;
     SLog* pstLog = new SLog();
     RotatingFileHandler* pstInfoHandler = new RotatingFileHandler("log", E_LOG_LEVELToString(E_LOG_LEVEL::E_INFO), 100, 2);
     pstLog->RegisterHandler(E_LOG_LEVEL::E_INFO, pstInfoHandler);
@@ -56,4 +58,29 @@ TEST(log, test_char_array)
     cout << charBuffer.GetContent() << endl;
     charBuffer.Clear();
     cout << charBuffer.GetBufferSize() << endl;
+}
+
+TEST(log, test_file_utils_get)
+{
+
+    const char* pszDirName = "log";
+    std::vector<char* > && vecFiles = FileUtils::GetFilesInDir(pszDirName, nullptr);
+    for (auto file : vecFiles)
+    {
+        cout << file << endl;
+    }
+    vecFiles = FileUtils::GetFilesInDir(pszDirName, "E_INFO");
+    for (auto file : vecFiles)
+    {
+        cout << file << endl;
+    }
+    vecFiles = FileUtils::GetFilesInDir(pszDirName, "E_ERROR");
+    if (vecFiles.empty())
+    {
+        cout << "empty" << endl;
+    }
+    for (auto file : vecFiles)
+    {
+        cout << file << endl;
+    }
 }

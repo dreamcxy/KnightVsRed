@@ -1,10 +1,11 @@
 //
-// Created by 15850 on 2022/8/7.
+// Created by cxy on 2022/8/7.
 //
 
 #include "fileutils.h"
 #include "commondefine.h"
 #include <sys/stat.h>
+#include <string.h>
 #include "dirent.h"
 
 long FileUtils::GetFileSize(const char *pszFilePath)
@@ -27,8 +28,35 @@ void FileUtils::RenameFileSameDir(const char *pszDirName, const char *pszOldFile
     rename(szOldFilePath, szNewFilePath);
 }
 
-void FileUtils::GetLatestFileInDir(const char *pszDirName, const char *pszFilePrefix)
+std::vector<char*> FileUtils::GetFilesInDir(const char *pszDirName, const char *pszFilePrefix)
 {
-    dirent* dirent;
-
+    dirent* diread;
+    DIR *dir;
+    std::vector<char* > vecFiles;
+    if ((dir = opendir(pszDirName)) != nullptr)
+    {
+        while ((diread = readdir(dir)) != nullptr)
+        {
+            if (strcmp(diread->d_name, ".") == 0 || strcmp(diread->d_name, "..") == 0)
+            {
+                continue;
+            }
+            if (pszFilePrefix != nullptr)
+            {
+                // 判断文件前缀是否跟pszFilePrefix相同
+                if (strstr(diread->d_name, pszFilePrefix) == nullptr)
+                {
+                    continue;
+                }
+            }
+            vecFiles.push_back(diread->d_name);
+        }
+        closedir(dir);
+    }
+    else
+    {
+        perror("open dir fail");
+    }
+    return std::move(vecFiles);
 }
+

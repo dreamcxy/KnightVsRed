@@ -5,6 +5,8 @@
 #ifndef SERVER_COMMONDEFINE_H
 #define SERVER_COMMONDEFINE_H
 
+// 小小的恶趣味
+#define chenxuyuan cxy
 
 #include <cstdint>
 #include <string>
