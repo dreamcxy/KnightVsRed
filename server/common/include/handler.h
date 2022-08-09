@@ -71,8 +71,17 @@ public:
 
     RotatingFileTimeHandler(const char* pszDir, const char* pszFileName, int32_t nFileSize, int32_t nFileNum);
 
+
     virtual void Log(const char* pszContent) override;
     virtual void LogDirect(const char* pszContent) override;
+
+    int32_t GetCurIndex() { return m_nCurFileIndex; }
+
+private:
+    // 获取目录下面除0之外最新的日志文件的index
+    int32_t GetCurLogFileIndex();
+    // 获取下一个0应该备份成的index
+    int32_t GetNextBackupIndex();
 
 private:
     std::unique_ptr<IBufferBase> m_pstBuffer;

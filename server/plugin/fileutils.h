@@ -8,9 +8,12 @@
 
 #include <cstdint>
 #include <vector>
+#include <string.h>
+#include <string>
 
 namespace FileUtils
 {
+
     // 获取文件大小
     long GetFileSize(const char* pszFilePath);
 
@@ -18,10 +21,13 @@ namespace FileUtils
     void RenameFileSameDir(const char* pszDirName, const char* pszOldFileName, const char* pszNewFileName);
 
     // 获取当前目录下面以prefix前缀的文件
-    std::vector<char*> GetFilesInDir(const char* pszDirName, const char* pszFilePrefix);
+    std::vector<std::string> GetFilesInDir(const char* pszDirName, const char* pszFilePrefix);
 
     // 获取当前目录下面以prefix前缀的最新的文件
-    std::vector<char*> GetLatestFileInDir(const char* pszDirName, const char* pszFilePrefix);
+    std::string GetLatestFileInDir(const char* pszDirName, const char* pszFilePrefix);
+
+    // string类型的字符串的分割
+
 }
 
 

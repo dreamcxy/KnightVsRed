@@ -24,14 +24,20 @@ public:
 };
 
 
-class SLog : public ILoggerBase
+class SLog
 {
 public:
-    virtual void Log(E_LOG_LEVEL eLogLevel, const char* pszContent) override;
-    virtual void RegisterHandler(E_LOG_LEVEL eLogLevel, IHandlerBase* pstHandler) override;
+    static void Log(E_LOG_LEVEL eLogLevel, const char* pszContent);
+    static void RegisterHandler(E_LOG_LEVEL eLogLevel, IHandlerBase* pstHandler);
 private:
-    std::map<E_LOG_LEVEL, std::unique_ptr<IHandlerBase>> m_mapLevelToHandler;
+    static std::map<E_LOG_LEVEL, std::unique_ptr<IHandlerBase>> m_mapLevelToHandler;
+
 };
 
+
+
+#define LOG_INFO()
+#define LOG_DEBUG()
+#define LOG_ERROR()
 
 #endif //KNIGHTVSREDSERVER_LOGGER_H

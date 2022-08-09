@@ -11,7 +11,7 @@ Developed with Unreal Engine 4
 
 - [ ] 宏里面遍历不定参数
 
-- [ ] c++的multidefine的编译问题
+- [x] c++的multidefine的编译问题
 
 ### 参考文档
 - [collision官方文档](https://docs.unrealengine.com/4.27/zh-CN/InteractiveExperiences/Physics/Collision/Reference/)
@@ -247,3 +247,37 @@ Developed with Unreal Engine 4
 ### 8.8 开发记录
 
 - 添加一些file处理函数
+
+### 8.9 开发记录
+
+-  `vector<char*>` 要注意 `char*`指针指向的是同一块地址
+
+  ```c++
+  while ((diread = readdir(dir)) != nullptr)
+          {
+              if (strcmp(diread->d_name, ".") == 0 || strcmp(diread->d_name, "..") == 0)
+              {
+                  continue;
+              }
+              if (pszFilePrefix != nullptr)
+              {
+                  // 判断文件前缀是否跟pszFilePrefix相同
+                  if (strstr(diread->d_name, pszFilePrefix) == nullptr)
+                  {
+                      continue;
+                  }
+              }
+  //            vecFiles.push_back(diread->d_name);
+              char szFilePath[MAX_LOG_FILE_PATH_SIZE];
+              sprintf(szFilePath, "%s/%s", pszDirName, diread->d_name);
+              vecFiles.push_back(szFilePath);
+          }
+  ```
+
+  这段代码里面的`vecFiles` 里面存储的`szFilePath`就一直是同一个地址， 很奇怪。
+
+- 谨慎的返回一个string的`c_str()`, 因为`c_str()`指向的是string内部的缓冲区的指针，要是string析构了， 那么这个指针指向的也就是不知道的内容了
+
+- 添加了rotatingfiletimehandler
+
+- 为了能够利用宏的形式调用SLog， Log函数必须是个static函数，导致SLog里面其他函数和变量都必须是static的，不然Log函数是没有办法调用的。

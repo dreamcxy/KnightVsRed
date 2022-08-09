@@ -5,7 +5,9 @@
 #include "fileutils.h"
 #include "commondefine.h"
 #include <sys/stat.h>
-#include <string.h>
+#include <functional>
+#include <algorithm>
+#include <cstring>
 #include "dirent.h"
 
 long FileUtils::GetFileSize(const char *pszFilePath)
@@ -28,11 +30,11 @@ void FileUtils::RenameFileSameDir(const char *pszDirName, const char *pszOldFile
     rename(szOldFilePath, szNewFilePath);
 }
 
-std::vector<char*> FileUtils::GetFilesInDir(const char *pszDirName, const char *pszFilePrefix)
+std::vector<std::string> FileUtils::GetFilesInDir(const char *pszDirName, const char *pszFilePrefix)
 {
     dirent* diread;
     DIR *dir;
-    std::vector<char* > vecFiles;
+    std::vector<std::string > vecFiles;
     if ((dir = opendir(pszDirName)) != nullptr)
     {
         while ((diread = readdir(dir)) != nullptr)
@@ -49,7 +51,10 @@ std::vector<char*> FileUtils::GetFilesInDir(const char *pszDirName, const char *
                     continue;
                 }
             }
-            vecFiles.push_back(diread->d_name);
+            char szFilePath[strlen(pszDirName) + strlen(diread->d_name)];
+            sprintf(szFilePath, "%s/%s", pszDirName, diread->d_name);
+            std::string strFilePath(szFilePath);
+            vecFiles.push_back(strFilePath.c_str());
         }
         closedir(dir);
     }
@@ -58,5 +63,28 @@ std::vector<char*> FileUtils::GetFilesInDir(const char *pszDirName, const char *
         perror("open dir fail");
     }
     return std::move(vecFiles);
+}
+
+std::string FileUtils::GetLatestFileInDir(const char *pszDirName, const char *pszFilePrefix)
+{
+    std::vector<std::string> && vecFiles = GetFilesInDir(pszDirName, pszFilePrefix);
+    if (vecFiles.size() <= 0)
+    {
+        return nullptr;
+    }
+    if (vecFiles.size() == 1)
+    {
+        return vecFiles[0].c_str();
+    }
+    std::function<bool(std::string , std::string )> oFileSortByMtime = [](std::string  strFilePath1,  std::string  strFilePath2) -> bool
+    {
+        struct stat sb1;
+        struct stat sb2;
+        stat(strFilePath1.c_str(), &sb1);
+        stat(strFilePath2.c_str(), &sb2);
+        return sb1.st_mtim.tv_sec > sb2.st_mtim.tv_sec;
+    };
+    std::sort(vecFiles.begin(), vecFiles.end(), oFileSortByMtime);
+    return vecFiles[0];
 }
 

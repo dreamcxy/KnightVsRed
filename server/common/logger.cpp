@@ -5,7 +5,7 @@
 
 #include "logger.h"
 
-void SLog::Log(E_LOG_LEVEL eLogLevel, const char *pszContent)
+static void SLog::Log(E_LOG_LEVEL eLogLevel, const char *pszContent)
 {
     auto iter = m_mapLevelToHandler.find(eLogLevel);
     if (iter == m_mapLevelToHandler.end() || iter->second == nullptr)

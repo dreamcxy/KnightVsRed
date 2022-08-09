@@ -10,6 +10,8 @@
 #include <sys/stat.h>
 
 #include <memory>
+#include <functional>
+#include "algorithm"
 
 FileHandler::FileHandler(const char *pszDir, const char *pszFileName)
 {
@@ -116,6 +118,11 @@ void RotatingFileHandler::LogDirect(const char *pszContent)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+RotatingFileTimeHandler::~RotatingFileTimeHandler() noexcept
+{
+    LogDirect(m_pstBuffer->GetContent());
+}
+
 RotatingFileTimeHandler::RotatingFileTimeHandler(const char *pszDir, const char *pszFileName, int32_t nFileSize,
                                                  int32_t nFileNum)
 {
@@ -125,6 +132,7 @@ RotatingFileTimeHandler::RotatingFileTimeHandler(const char *pszDir, const char 
     m_nFileSize = nFileSize;
     m_pstBuffer = std::make_unique<CharBuffer>();
     // 读取目录下面的文件，看到哪个目录了
+    m_nCurFileIndex = GetCurLogFileIndex();
 }
 
 
@@ -143,17 +151,48 @@ void RotatingFileTimeHandler::Log(const char *pszContent)
 void RotatingFileTimeHandler::LogDirect(const char *pszContent)
 {
     // 文件根据时间轮转，写入的文件都是0开头的， 根据文件大小，将0备份到1
-    // 重新起服的时候，根据
-    int32_t nIndex = 0; // 这是始终的index
     char pszFilePath[MAX_LOG_FILE_PATH_SIZE];
     sprintf(pszFilePath, "%s/%s_%d.txt", m_szDir, m_szFileName, 0);
     if (FileUtils::GetFileSize(pszFilePath) + strlen(pszContent) >= m_nFileSize)
     {
         // 迁移文件
         char pszNewFileName[MAX_LOG_FILE_PATH_SIZE];
-        sprintf(pszNewFileName, "%s_%d.txt", m_szFileName, m_nCurFileIndex);
+        sprintf(pszNewFileName, "%s_%d.txt", m_szFileName, GetNextBackupIndex());
         char pszOldFileName[MAX_LOG_FILE_PATH_SIZE];
         sprintf(pszOldFileName, "%s_%d.txt", m_szFileName, 0);
         FileUtils::RenameFileSameDir(m_szDir, pszOldFileName, pszNewFileName);
     }
+    // 写入文件
+    char pszFileName[MAX_LOG_FILE_PATH_SIZE];
+    sprintf(pszFileName, "%s_%d.txt", m_szFileName, 0);
+    CFileRaii cFileRaii(m_szDir, pszFileName);
+    cFileRaii.write(pszContent);
+
+}
+
+int32_t RotatingFileTimeHandler::GetCurLogFileIndex()
+{
+    std::vector<std::string>&& vecFiles = FileUtils::GetFilesInDir(m_szDir, m_szFileName);
+    if (vecFiles.empty() || vecFiles.size() == 1)
+    {
+        return 0;
+    }
+    std::function<bool(std::string , std::string )> oFileSortByMtime = [](std::string  strFilePath1,  std::string  strFilePath2) -> bool
+    {
+        int32_t nPointIndex1 = strFilePath1.find('.', 0);
+        int32_t nPointIndex2 = strFilePath2.find('.', 0);
+        int32_t nIndex1 = atoi(strFilePath1.substr(nPointIndex1-1, 1).c_str());
+        int32_t nIndex2 = atoi(strFilePath2.substr(nPointIndex2-1, 1).c_str());
+        return nIndex2 < nIndex1;
+    };
+    std::sort(vecFiles.begin(), vecFiles.end(), oFileSortByMtime);
+    const std::string& strFile = vecFiles[0];
+    int32_t nPointIndex = strFile.find('.', 0);
+    return atoi(strFile.substr(nPointIndex-1, 1).c_str());
+}
+
+int32_t RotatingFileTimeHandler::GetNextBackupIndex()
+{
+    m_nCurFileIndex = (m_nCurFileIndex % m_nFileNum) + 1;
+    return m_nCurFileIndex;
 }

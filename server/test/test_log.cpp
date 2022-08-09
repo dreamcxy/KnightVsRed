@@ -35,6 +35,22 @@ TEST(log, test_log_rotatingfilehandler)
     pstLog->Log(E_LOG_LEVEL::E_INFO, "hello info 3");
 }
 
+TEST(log, test_log_rotatingfiletimehandler)
+{
+    SLog* pstLog = new SLog();
+    RotatingFileTimeHandler* pstInfoHandler = new RotatingFileTimeHandler("log", E_LOG_LEVELToString(E_LOG_LEVEL::E_INFO),
+                                                                          100, 10);
+    pstLog->RegisterHandler(E_LOG_LEVEL::E_INFO, pstInfoHandler);
+
+    int32_t nIndex = 0;
+    while ( nIndex < 100)
+    {
+        nIndex++;
+        string strMsg = "hello info" + to_string(nIndex);
+        pstLog->Log(E_LOG_LEVEL::E_INFO, strMsg.c_str());
+    }
+}
+
 TEST(log, test_file_size)
 {
     return;
@@ -62,9 +78,10 @@ TEST(log, test_char_array)
 
 TEST(log, test_file_utils_get)
 {
-
+    // 测试获取文件
+    return;
     const char* pszDirName = "log";
-    std::vector<char* > && vecFiles = FileUtils::GetFilesInDir(pszDirName, nullptr);
+    std::vector<string > && vecFiles = FileUtils::GetFilesInDir(pszDirName, nullptr);
     for (auto file : vecFiles)
     {
         cout << file << endl;
@@ -83,4 +100,12 @@ TEST(log, test_file_utils_get)
     {
         cout << file << endl;
     }
+}
+
+TEST(log, test_file_time_sort)
+{
+    return;
+    const char* pszDirName = "log";
+    string&& file = FileUtils::GetLatestFileInDir(pszDirName, nullptr);
+    cout << file << endl;
 }
