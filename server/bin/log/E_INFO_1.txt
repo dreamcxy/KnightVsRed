@@ -1,3 +1,2 @@
-hello info 1
-hello info 2
-hello info 3
+hello info 96...[/mnt/g/DemoLike/KnightVsRed/server/test/test_log.cpp:TestBody():54]
+

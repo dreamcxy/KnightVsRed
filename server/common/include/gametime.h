@@ -28,6 +28,6 @@ public:
 
 private:
     struct timeval m_stCurTimeVal;
-}
+};
 
 #endif //SERVER_GAMETIME_H

@@ -4,8 +4,11 @@
 
 #include "../common/include/raii.h"
 #include "../common/include/fileraii.h"
+#include "gametime.h"
 #include "gtest/gtest.h"
+#include <iostream>
 
+using namespace std;
 
 TEST(raii, fileraii_test)
 {
@@ -23,4 +26,10 @@ TEST(raii, commonraii_Test)
            if (file.is_open())  file.close();
        });
     file << "manager";
+}
+
+TEST(raii, test_instance)
+{
+    CGameTime* poGameTime = CGameTime::GetInstance();
+    cout << poGameTime->GetCurSecond() << endl;
 }

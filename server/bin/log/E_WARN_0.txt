@@ -1,0 +1,2 @@
+hello warn 100...[/mnt/g/DemoLike/KnightVsRed/server/test/test_log.cpp:TestBody():55]
+

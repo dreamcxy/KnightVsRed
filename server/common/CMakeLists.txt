@@ -6,10 +6,12 @@ add_library(${MODULE_NAME} STATIC ${MODULE_SRC}
         include/logger.h
         include/handler.h
         include/buffer.h
+        include/gametime.h
 
         handler.cpp
         logger.cpp
         buffer.cpp
+        gametime.cpp
         )
 
 
