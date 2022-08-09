@@ -11,7 +11,6 @@
 using namespace std;
 
 
-
 TEST(log, test_log_filehanlder)
 {
     return;
@@ -37,17 +36,24 @@ TEST(log, test_log_rotatingfilehandler)
 
 TEST(log, test_log_rotatingfiletimehandler)
 {
-    SLog* pstLog = new SLog();
     RotatingFileTimeHandler* pstInfoHandler = new RotatingFileTimeHandler("log", E_LOG_LEVELToString(E_LOG_LEVEL::E_INFO),
-                                                                          100, 10);
-    pstLog->RegisterHandler(E_LOG_LEVEL::E_INFO, pstInfoHandler);
-
+                                                                          100, 5);
+    SLog::RegisterHandler(E_LOG_LEVEL::E_INFO, pstInfoHandler);
+    RotatingFileTimeHandler* pstWarnHandler = new RotatingFileTimeHandler("log", E_LOG_LEVELToString(E_LOG_LEVEL::E_WARN),
+                                                                          100, 5);
+    SLog::RegisterHandler(E_LOG_LEVEL::E_WARN, pstWarnHandler);
+    RotatingFileTimeHandler* pstErrorHandler = new RotatingFileTimeHandler("log", E_LOG_LEVELToString(E_LOG_LEVEL::E_ERROR),
+                                                                          100, 5);
+    SLog::RegisterHandler(E_LOG_LEVEL::E_ERROR, pstErrorHandler);
     int32_t nIndex = 0;
     while ( nIndex < 100)
     {
         nIndex++;
-        string strMsg = "hello info" + to_string(nIndex);
-        pstLog->Log(E_LOG_LEVEL::E_INFO, strMsg.c_str());
+//        string strMsg = "hello info" + to_string(nIndex);
+//        SLog::Log(E_LOG_LEVEL::E_INFO, strMsg.c_str());
+        LOGINFO("hello info %d", nIndex);
+        LOGWARN("hello warn %d", nIndex);
+        LOGERROR("hello error %d", nIndex);
     }
 }
 

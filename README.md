@@ -281,3 +281,5 @@ Developed with Unreal Engine 4
 - 添加了rotatingfiletimehandler
 
 - 为了能够利用宏的形式调用SLog， Log函数必须是个static函数，导致SLog里面其他函数和变量都必须是static的，不然Log函数是没有办法调用的。
+
+- 包装成宏
