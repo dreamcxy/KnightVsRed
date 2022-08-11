@@ -4,6 +4,7 @@
  * server 模板
  * 
 **/
+#pragma once
 
 class CGameTime;
 class CServerManager;
@@ -46,4 +47,5 @@ public:
     CGameTime*          m_poGameTime = nullptr;
     CServerManager*     m_poServerMgr = nullptr;
     CNetworkManager*    m_poNetworkMgr = nullptr;
-}
+
+};

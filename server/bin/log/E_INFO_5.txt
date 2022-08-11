@@ -1,2 +1,0 @@
-hello info 95...[/mnt/g/DemoLike/KnightVsRed/server/test/test_log.cpp:TestBody():54]
-

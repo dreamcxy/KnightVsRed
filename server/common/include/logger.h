@@ -9,6 +9,7 @@
 #include "handler.h"
 #include <memory>
 #include <map>
+#include "singleton.h"
 
 
 
@@ -32,8 +33,9 @@ struct STLogInstance
     std::unique_ptr<IHandlerBase> m_pstErrorHandler;
 };
 
-class SLog
+class SLog : public TSingleton<SLog>
 {
+    DECLARE_CLASS_SINGLETON(SLog)
 public:
     static void Log(E_LOG_LEVEL eLogLevel, const char* pszContent);
     static void RegisterHandler(E_LOG_LEVEL eLogLevel, IHandlerBase* pstHandler);

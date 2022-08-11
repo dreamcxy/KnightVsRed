@@ -2,8 +2,8 @@
 // Created by cxy on 2022/7/29.
 //
 
-#include "../common/include/raii.h"
-#include "../common/include/fileraii.h"
+#include "raii.h"
+#include "fileraii.h"
 #include "gametime.h"
 #include "gtest/gtest.h"
 #include <iostream>

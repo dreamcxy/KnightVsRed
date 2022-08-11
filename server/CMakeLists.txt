@@ -14,7 +14,7 @@ set(CMAKE_C_COMPILER, "clang")
 set(CMAKE_CXX_COMPILER, "clang++")
 
 # 需要编译的可执行模块
-list(APPEND EXE_MODULES test)
+list(APPEND EXE_MODULES test homeserver)
 
 # 设定输出位置
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY  ${PROJECT_SOURCE_DIR}/bin)
