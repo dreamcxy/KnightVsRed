@@ -12,6 +12,7 @@ class CHomeServer : public CServerTemplate, public TSingleton<CHomeServer>
     DECLARE_CLASS_SINGLETON(CHomeServer)
 public:
 
+
 };
 
 

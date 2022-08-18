@@ -37,6 +37,8 @@ public:
     // 处理收到的客户端发包
     virtual int32_t HandleMsg();
 
+    // 开始运行
+    virtual void Run(int argc,char *argv[]);
 private:
     int32_t StartDaemonProcess(char *pszWorkDir = nullptr);
 

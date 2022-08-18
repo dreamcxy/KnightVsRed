@@ -116,7 +116,6 @@ void CServerTemplate::MainLoop()
 
 int32_t CServerTemplate::HandleMsg()
 {
-
 }
 
 int32_t CServerTemplate::InitNetwork()
@@ -133,4 +132,9 @@ int32_t CServerTemplate::InitNetwork()
         return -1;
     }
     return 0;
+}
+
+void CServerTemplate::Run(int argc, char **argv)
+{
+
 }
