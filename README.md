@@ -287,3 +287,10 @@ Developed with Unreal Engine 4
 ###  8.10 开发记录
 
 - 添加homeserver
+
+
+
+### 8.22 开发记录
+
+- 没想到一下子又停了这么久
+- homeserver参加编译，很奇怪， 明明是支持posix的， 但clion的编译会提示找不到

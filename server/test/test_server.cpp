@@ -7,9 +7,10 @@
 #include "gtest/gtest.h"
 #include "servertemplate.h"
 
+
 using namespace std;
 
 TEST(server, test_server_init)
 {
-
+    return;
 }

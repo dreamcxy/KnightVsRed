@@ -3,7 +3,6 @@
 #include "servermanager.h"
 #include "networkmanager.h"
 #include <unistd.h>
-#include <stdio.h>
 #include <cassert>
 
 
@@ -107,7 +106,7 @@ void CServerTemplate::MainLoop()
         if (nMsgCount == 0)
         {
             // 当前帧没有处理消息，就休息一会儿，避免CPU占满100%
-            m_poNetworkMgr
+            sleep(1);
         }
         OnTickEnd();
     }
@@ -136,5 +135,22 @@ int32_t CServerTemplate::InitNetwork()
 
 void CServerTemplate::Run(int argc, char **argv)
 {
-
+    int32_t iOpt;
+    SetDaemon(false);
+    while (-1 != (iOpt = getopt(argc, argv, "dhvc:s:t")))
+    {
+        switch (iOpt) {
+            case 'd':
+                SetDaemon(true);
+                break;
+            default:
+                break;
+        }
+    }
+    if (Init() != 0)
+    {
+        assert(false);
+        return;
+    }
+    MainLoop();
 }
