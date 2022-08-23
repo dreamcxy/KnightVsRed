@@ -4,7 +4,7 @@ project(KnightVsRedServer)
 set(CMAKE_CXX_STANDARD 14)
 
 #gtest
-find_package(GTest REQUIRED)
+find_package(GTest)
 if (GTest_FOUND)
     include_directories(${GTEST_INCLUDE_DIR})
 endif ()
@@ -22,9 +22,12 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY  ${PROJECT_SOURCE_DIR}/bin)
 set(CMAKE_CXX_FLAGS  -g)
 
 # 包含通用头文件
+include_directories(SYSTEM "/usr/local/include")
+
 include_directories("common" "common/include")
 include_directories(plugin)
 include_directories(test)
+
 
 # 库文件
 #list(APPEND COMMON_LIB common)

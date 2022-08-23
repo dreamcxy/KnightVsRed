@@ -288,9 +288,11 @@ Developed with Unreal Engine 4
 
 - 添加homeserver
 
-
-
 ### 8.22 开发记录
 
 - 没想到一下子又停了这么久
 - homeserver参加编译，很奇怪， 明明是支持posix的， 但clion的编译会提示找不到
+
+### 8.23开发记录
+
+- cmake -DCMAKE_CXX_COMPILER=/pathto/g++ -DCMAKE_C_COMPILER=/pathto/gcc /pathto/source cmake需要手动置顶cxx，c的编译器，仅仅是在CMakeLists.txt里面指定的话，如果bashrc里面不一样，就会报错。
